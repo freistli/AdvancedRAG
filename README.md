@@ -114,6 +114,33 @@ To make it work:
 
 ### Endpoint 
 
+  https://{BASEURL}/advchatbot/run/chat
+
+### METHOD
+
+  POST
+
+### HEADER
+
+ Content-Type application/json
+
+###  Sample Data
+
+   ```
+   {
+     "data": [
+       "When did the Author convince his farther",  <----- Prompt
+       "", <--- History Object, don't change it
+       "Azure AI Search",  <------ Index Type
+       "azuresearch_0",   <------- Index Name or Folder
+       "You are a friendly AI Assistant"    <----- System Message
+     ]
+   }
+   
+```
+
+### Endpoint 
+
   https://{BASEURL}/proofreadaddin/run/predict
 
 ### METHOD
@@ -128,10 +155,9 @@ To make it work:
 
    ```
    {
-  "data": [
-    "rules",       <------- Index Name or Folder
-    "Criticize the proofread content, especially for wrong words..", <----- System Message
- "今回は半導体製造装置セクターの最近の動きを分析します。" <----- Prompt
+  "data": [    
+    "今回は半導体製造装置セクターの最近の動きを分析します。" , <---- Proofread Content
+    "False" <--- Streaming
   ]
 }
 ```
