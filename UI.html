@@ -1,0 +1,119 @@
+<html>
+    <head>
+        <title>Advanced RAG AI Service</title>
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                font-family: 'Open Sans', sans-serif;
+            }
+            h1 {
+                padding: 15px;
+                margin: 0;
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #4474d3, 0 0 70px #4474d3, 0 0 80px #4474d3
+            }
+            #main {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+            .tab { 
+                display: none; 
+                width: 100%;
+                height: 100%;
+            }
+            .tab.active { display: block; }
+            .tab-button { 
+                margin-right: 4px; 
+                width: 250px;
+                background-color: #6264a7; 
+                color: white; 
+                border: none; 
+                padding: 4px 8px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 14px;
+                transition-duration: 0.4s;
+                cursor: pointer;
+                border-top-left-radius: 4px;
+                border-top-right-radius: 4px;
+            }
+            .tab-button:hover { 
+                background-color: #292fd3; 
+            }
+            .tab-button.active { 
+                background-color: #070ed7; 
+                font-weight: bold;
+                font-size: 14px;
+                color: white; 
+            }
+            iframe {
+                width: 100%;
+                height: calc(100% - 50px); /* Adjust as needed */
+            }
+            .button-container {
+                display: flex;
+            }
+        </style>        
+        
+        <script>
+            function openTab(tabId) {
+                var i, tab, button;
+                tab = document.getElementsByClassName("tab");
+                for (i = 0; i < tab.length; i++) {
+                    tab[i].style.display = "none";
+                }
+                button = document.getElementsByClassName("tab-button");
+                for (i = 0; i < button.length; i++) {
+                    button[i].className = button[i].className.replace(" active", "");
+                }
+                document.getElementById(tabId).style.display = "block";
+                event.currentTarget.className += " active";
+            }
+        </script>
+    </head>
+    <body >
+        <h1>Advanced RAG AI Service</h1>
+        <!--mgt-login></mgt-login-->
+        <div id="main">
+            <div class="button-container">
+                <button class="tab-button active" onclick="openTab('advchatbot')">Chat Mode</button>
+                <button class="tab-button" onclick="openTab('proofread')">Proofread</button>
+                <button class="tab-button" onclick="openTab('advproofread')">Advanced Proofread</button>                
+                <button class="tab-button" onclick="openTab('buildazureindex')">Azure AI Search Index</button>
+                <button class="tab-button" onclick="openTab('buildragindex')">Knowledge Graph Index</button>
+                <button class="tab-button" onclick="openTab('viewgraph')">View Knowledge Graph Index</button>
+                <button class="tab-button" onclick="openTab('buildrrindex')">Recursive Retriever Index</button>
+                <button class="tab-button" onclick="openTab('buildsummaryindex')">Summary Index</button>
+            </div>
+            <div id="advchatbot" class="tab active">
+                <iframe src="/advchatbot/"></iframe>
+            </div>
+            <div id="proofread" class="tab">
+                <iframe src="/proofread/"></iframe>
+            </div>
+            <div id="advproofread" class="tab">
+                <iframe src="/advproofread/"></iframe>
+            </div>
+            <div id="buildazureindex" class="tab">
+                <iframe src="/buildazureindex/"></iframe>
+            </div>
+            <div id="buildragindex" class="tab">
+                <iframe src="/buildragindex/"></iframe>
+            </div>
+            <div id="viewgraph" class="tab">
+                <iframe src="/viewgraph/"></iframe>
+            </div>
+            
+            <div id="buildrrindex" class="tab">
+                <iframe src="/buildrrindex/"></iframe>
+            </div>
+            <div id="buildsummaryindex" class="tab">
+                <iframe src="/buildsummaryindex/"></iframe>
+            </div>
+        </div>
+    </body>
+</html>

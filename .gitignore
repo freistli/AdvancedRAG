@@ -1,0 +1,11 @@
+.env_4_SC
+.env_4_VKG
+.env_4_FineTune
+.vscode
+__pycache__
+*.docx
+*.pdf
+storage
+build
+dist
+venv
