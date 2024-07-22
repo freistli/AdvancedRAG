@@ -36,7 +36,7 @@ It can run as local Docker or put it to Azure Container App, build and perform q
 git clone https://github.com/freistli/AdvancedRAG.git
 ```
 
-4. IMPORTANT: Rename **.env_4_SC.sample** to **.env_4_SC**, input necessary environment variables. 
+2. IMPORTANT: Rename **.env_4_SC.sample** to **.env_4_SC**, input necessary environment variables. 
 
    **Azure OpenAI** resource and **Azure Document Intellegency** resource are must required.
 
@@ -45,7 +45,7 @@ git clone https://github.com/freistli/AdvancedRAG.git
    **MS GRAPHRAG** is optional. If you want to use it please go through these steps to create GraphRAG backend service on Azure:
    https://github.com/azure-samples/graphrag-accelerator
 
-5. Build docker image
+3. Build docker image
 
 ```
 docker build -t docaidemo .
@@ -183,6 +183,5 @@ Generating Knowledge Graph Index steps are the same as others.
 2. Put you Knowledge Graph Index name, and click Submit
 3. Wait a while, click Download Knowledge Graph View to see the result.
 
-![image](https://github.com/freistli_microsoft/AdvancedRAG/assets/117236408/25feda62-6287-4a93-a511-699fea1442f1)
+![image](https://github.com/user-attachments/assets/6720ac13-604f-4c94-b638-b9aea807b04a)
 
-![image](https://github.com/freistli_microsoft/AdvancedRAG/assets/117236408/9be1a084-25e9-4fa9-8da8-e6105d568cfc)
