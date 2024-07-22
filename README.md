@@ -5,32 +5,29 @@ Advanced RAG AI Service running in Docker, it can be used as
 1. Quick MVP/POC/Play Ground to verify which Index type can address the specific (usually related to accuracy) RAG use case.
 2. Http Clients and Word Add-In can use proper vector index types to search doc info and generate LLM response from the service:
 
-<img src="https://github.com/freistli_microsoft/AdvancedRAG/assets/117236408/86bcfc57-1409-4c63-97c3-969f6b7abd87" alt="drawing" width="600"/>
-
+<img src="https://github.com/user-attachments/assets/71ca8893-e5f7-4f1b-9306-353cf599f333" alt="drawing" width="600"/>
 
 ## Introduction
 The service can help developers quickly verify diffrent RAG indexing techniques (about accuracy and performance) for their own user cases, from Index Generation to verify the output through Chat Mode and Proofreading mode.
 
 It can run as local Docker or put it to Azure Container App.
 
-Can work with
+Is able to build and perform queries on these Index types:
       
-      Knowledge Graph Indexing
-      
-      Recursive Retriever query
-      
-      Tree Mode Summarization
-      
-      Semantic Hybrid Search + Sub Query Engine with Azure OpenAI
+- Azure AI Search
 
-      Microsoft Graph RAG (Local Search + Global Search)
+- MS GraghRAG Local
+
+- MS GraghRAG Global
+
+- Knowledge Graph
+
+- Recursive Retriever
+
+- Summary Index
       
 
-<img src="https://github.com/freistli_microsoft/AdvancedRAG/assets/117236408/fb2a5762-30a3-46e8-8f8d-c000f4695b18" alt="drawing" width="600"/>
-
-<img src="https://github.com/freistli_microsoft/AdvancedRAG/assets/117236408/e8459e09-6785-431d-8de7-7139d84e5e16" alt="drawing" width="600"/>
-
-<img src="https://github.com/user-attachments/assets/580be8d8-4ace-40a9-9337-f4ae17c83ec6" alt="drawing" width="600"/>
+<img src="https://github.com/user-attachments/assets/e5d5da11-7091-4565-95ab-b6a1f0918283" alt="drawing" width="800"/>
 
 
 ## Quick Start
