@@ -2,8 +2,9 @@
 
 Advanced RAG AI Service running in Docker, it can be used as 
 
-1. Quick MVP/POC/Play Ground to verify which Index type can address the specific (usually related to accuracy) RAG use case.
-2. Http Clients and Word Add-In can use proper vector index types to search doc info and generate LLM response from the service:
+1. Quick MVP/POCm playground to verify which Index type can exactly address the specific (usually related to accuracy) LLM RAG use case.
+
+2. Http Clients and MS Office Word/Outlook Add-In can easily use proper vector index types to search doc info and generate LLM response from the service.
 
 <img src="https://github.com/user-attachments/assets/71ca8893-e5f7-4f1b-9306-353cf599f333" alt="drawing" width="600"/>
 
