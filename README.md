@@ -94,7 +94,7 @@ Note: If you don't use .env_4_SC in image, can set environment variables in the 
   ![image](https://github.com/user-attachments/assets/a7001056-09b9-4d7f-a08e-22d71fa865da)
 
 
-## (Optional) Setup Defaut Rules Index
+## (Optional) Setup Your Own Index in the Docker Image
 
 "rules" Index Name is predefined for Knowledge Graph Index of Japanese proofread demo in this solution. Developers can use their own indexes in other folders for the docker:
 
