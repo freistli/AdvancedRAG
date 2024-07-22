@@ -89,26 +89,23 @@ Note: If you don't use .env_4_SC in image, can set environment variables in the 
 
 **/tmp/index_cache/yourfilename** can be used as your Index name.
 
-6. You can download the index to local by clicking the Download Index button, so that can use it in your own docker image
+6. You can download the index files to local by clicking the Download Index button, so that can use it in your own docker image
 
   ![image](https://github.com/user-attachments/assets/a7001056-09b9-4d7f-a08e-22d71fa865da)
 
 
-
 ## (Optional) Setup Defaut Rules Index
 
-"rules" Index Name is predefined for Knowledge Graph Index in this solution. It is recommended if you want to use Proofreadaddin REST API Call (Explained below).
+"rules" Index Name is predefined for Knowledge Graph Index of Japanese proofread demo in this solution. Developers can use their own indexes in other folders for the docker:
 
 To make it work:
 
- 1. Save Default KG index into ./rules/storage/rules_original
+ 1. Move to the folder which contains the AdvancedRAG dockerfile
+ 2. Create a folder to keep the index, for example, index123
+ 3. Extract the index zip file you get from the step 6 in the "Build Index" section, save index files you downloaded into ./index123
+ 4. Build the docker image again.
 
- 2. (Optional) Save Trained KG index into ./rules/storage/rules_train
-
-  ![image](https://github.com/freistli_microsoft/AdvancedRAG/assets/117236408/4c499fee-be42-4049-97ca-54f8f4f697b1)
-
-  ![image](https://github.com/freistli_microsoft/AdvancedRAG/assets/117236408/a75fe8e3-f420-4187-91a5-a199b8e19bc5)
-
+After this, you can use index123 as index name in the Chat mode.
 
 ## Call ADVRAGSVC through REST API CALL
 
