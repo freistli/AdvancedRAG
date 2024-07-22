@@ -10,22 +10,19 @@ Advanced RAG AI Service running in Docker, it can be used as
 ## Introduction
 The service can help developers quickly verify diffrent RAG indexing techniques (about accuracy and performance) for their own user cases, from Index Generation to verify the output through Chat Mode and Proofreading mode.
 
-It can run as local Docker or put it to Azure Container App.
-
-Is able to build and perform queries on these Index types:
+It can run as local Docker or put it to Azure Container App, build and perform queries on multiple importnat Index types. Below is the info about index types and how the project implements them:
       
-- Azure AI Search
+- Azure AI Search : Azure AI Search Python SDK
 
-- MS GraghRAG Local
+- MS GraghRAG Local : REST APIs Provided by GraghRAG accelerator
+  
+- MS GraghRAG Global : REST APIs Provided by GraghRAG accelerator
 
-- MS GraghRAG Global
+- Knowledge Graph : LlamaIndex
 
-- Knowledge Graph
+- Recursive Retriever : LlamaIndex
 
-- Recursive Retriever
-
-- Summary Index
-      
+- Summary Index : LlamaIndex      
 
 <img src="https://github.com/user-attachments/assets/e5d5da11-7091-4565-95ab-b6a1f0918283" alt="drawing" width="800"/>
 
@@ -33,18 +30,22 @@ Is able to build and perform queries on these Index types:
 ## Quick Start
 
 
-1. git clone https://github.com/freistli_microsoft/AdvancedRAG.git
+1. Download the repo:
+   
+```
+git clone https://github.com/freistli/AdvancedRAG.git
+```
 
-2. IMPORTANT: Rename **.env_4_SC.sample** to **.env_4_SC**, input necessary environment variables. 
+4. IMPORTANT: Rename **.env_4_SC.sample** to **.env_4_SC**, input necessary environment variables. 
 
-   Azure OpenAI resource and Azure Document Intellegency resource are must required.
+   **Azure OpenAI** resource and **Azure Document Intellegency** resource are must required.
 
-   Azure AI Search is optional if you don't build Azure AI Search index or use it.
+   **Azure AI Search** is optional if you don't build Azure AI Search index or use it.
 
-   MS GRAPHRAG is optional. If you want to use it please go through these steps to create GraphRAG backend service on Azure:
+   **MS GRAPHRAG** is optional. If you want to use it please go through these steps to create GraphRAG backend service on Azure:
    https://github.com/azure-samples/graphrag-accelerator
 
-4. Build docker image
+5. Build docker image
 
 ```
 docker build -t docaidemo .
@@ -90,7 +91,9 @@ Note: If you don't use .env_4_SC in image, can set environment variables in the 
 
 6. You can download the index to local by clicking the Download Index button, so that can use it in your own docker image
 
-  ![image](https://github.com/freistli_microsoft/AdvancedRAG/assets/117236408/00460511-2d60-4956-bbd7-9c16d818fa18)
+  ![image](https://github.com/user-attachments/assets/a7001056-09b9-4d7f-a08e-22d71fa865da)
+
+
 
 ## (Optional) Setup Defaut Rules Index
 
