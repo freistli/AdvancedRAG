@@ -6,7 +6,7 @@ Advanced RAG AI Service running in Docker, it can be used as
 
 2. Http Clients and MS Office Word/Outlook Add-In can easily use proper vector index types to search doc info and generate LLM response from the service.
 
-<img src="https://github.com/user-attachments/assets/71ca8893-e5f7-4f1b-9306-353cf599f333" alt="drawing" width="600"/>
+<img src="https://github.com/user-attachments/assets/71ca8893-e5f7-4f1b-9306-353cf599f333" alt="drawing" width="400"/>
 
 ## Introduction
 The service can help developers quickly verify diffrent RAG indexing techniques (about accuracy and performance) for their own user cases, from Index Generation to verify the output through Chat Mode and Proofreading mode.
