@@ -25,8 +25,12 @@ It can run as local Docker or put it to Azure Container App, build and perform q
 
 - Summary Index : [LlamaIndex](https://docs.llamaindex.ai/en/latest/api_reference/indices/summary/)      
 
+
 <img src="https://github.com/user-attachments/assets/e5d5da11-7091-4565-95ab-b6a1f0918283" alt="drawing" width="800"/>
 
+## Source Code & Development
+
+https://github.com/freistli/AdvancedRAG_SVC
 
 ## Quick Start
 
