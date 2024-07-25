@@ -135,7 +135,8 @@ After this, you can use index123 as index name in the Chat mode.
        "", <--- History Object, don't change it
        "Azure AI Search",  <------ Index Type
        "azuresearch_0",   <------- Index Name or Folder
-       "You are a friendly AI Assistant"    <----- System Message
+       "You are a friendly AI Assistant",    <----- System Message
+       false   <---- Streaming flag, true or false
      ]
    }
    
@@ -161,7 +162,7 @@ NOTE: "rules" Index Name is predefined for Knowledge Graph Index of proofread ad
    {
   "data": [    
     "今回は半導体製造装置セクターの最近の動きを分析します。" , <---- Proofread Content
-    "False" <--- Streaming
+    false <--- Streaming flag, true or false
   ]
 }
 ```
