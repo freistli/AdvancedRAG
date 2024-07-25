@@ -101,7 +101,7 @@ Note: If you don't use .env_4_SC in image, can set environment variables in the 
 
 ## (Optional) Setup Your Own Index in the Docker Image
 
-"rules" Index Name is predefined for Knowledge Graph Index of Japanese proofread demo in this solution. Developers can use their own indexes in other folders for the docker:
+Developers can use their own indexes folders for the docker image:
 
 To make it work:
 
@@ -144,6 +144,8 @@ After this, you can use index123 as index name in the Chat mode.
 ### Endpoint 
 
   https://{BASEURL}/proofreadaddin/run/predict
+
+NOTE: "rules" Index Name is predefined for Knowledge Graph Index of proofread addin. Please save Default knowledge graph index into **./rules/storage/rules_original**
 
 ### METHOD
 
