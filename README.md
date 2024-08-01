@@ -107,28 +107,30 @@ Developers can use their own indexes folders for the docker image:
 
 To make it work:
 
- 1. Move to the folder which contains the AdvancedRAG dockerfile
+ 1. Move to the solution folder which contains the AdvancedRAG dockerfile
  2. Create a folder to keep the index, for example, index123
  3. Extract the index zip file you get from the step 6 in the "Build Index" section, save index files you downloaded into ./index123
  4. Build the docker image again.
 
 After this, you can use index123 as index name in the Chat mode.
 
+NOTE: You can use the same way to store CSV files, build them with docker if you want to try CSV Query Engine without file uploading.
+
 ## Call ADVRAGSVC through REST API CALL
 
-### Endpoint 
+### Endpoint 1: Chat Api
 
   https://{BASEURL}/advchatbot/run/chat
 
-### METHOD
+#### METHOD
 
   POST
 
-### HEADER
+#### HEADER
 
- Content-Type application/json
+ Content-Type: application/json
 
-###  Sample Data
+####  Sample Data
 
    ```
    {
@@ -144,27 +146,54 @@ After this, you can use index123 as index name in the Chat mode.
    
 ```
 
-### Endpoint 
+### Endpoint 2: Proofread Addin API
 
   https://{BASEURL}/proofreadaddin/run/predict
 
 NOTE: "rules" Index Name is predefined for Knowledge Graph Index of proofread addin. Please save Default knowledge graph index into **./rules/storage/rules_original**
 
-### METHOD
+#### METHOD
 
   POST
 
-### HEADER
+#### HEADER
 
- Content-Type application/json
+ Content-Type: application/json
 
-###  Sample Data
+####  Sample Data
 
    ```
    {
   "data": [    
     "今回は半導体製造装置セクターの最近の動きを分析します。" , <---- Proofread Content
     false <--- Streaming flag, true or false
+  ]
+}
+```
+
+### Endpoint 3: CSV Query Engine API
+
+  https://{BASEURL}/ChatWithCSV/run/chat
+
+#### METHOD
+
+  POST
+
+#### HEADER
+
+ Content-Type: application/json
+
+####  Sample Data
+
+   ```
+   {
+  "data": [
+    "how many records does it have",   
+    "", 
+    "CSV Query Engine",   
+    "./rules/files/sample.csv",    
+    "You are a helpful AI assistant. You can help users with a variety of tasks, such as answering questions, providing recommendations, and assisting with tasks. You can also provide information on a wide range of topics from the retieved documents. If you are unsure about something, you can ask for clarification. Please be polite and professional at all times. If you have any questions, feel free to ask." ,
+    false   
   ]
 }
 ```
