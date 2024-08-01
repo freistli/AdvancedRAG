@@ -8,6 +8,7 @@ Advanced RAG AI Service running in Docker, it can be used as
 
 <img src="https://github.com/user-attachments/assets/71ca8893-e5f7-4f1b-9306-353cf599f333" alt="drawing" width="400"/>
 
+
 ## Introduction
 The service can help developers quickly verify diffrent RAG indexing techniques (about accuracy and performance) for their own user cases, from Index Generation to verify the output through Chat Mode and Proofreading mode.
 
@@ -29,6 +30,10 @@ It can run as local Docker or put it to Azure Container App, build and perform q
 
 
 <img src="https://github.com/user-attachments/assets/e5d5da11-7091-4565-95ab-b6a1f0918283" alt="drawing" width="800"/>
+
+
+<img src="https://github.com/user-attachments/assets/42b556a2-2862-4dc0-9511-25dd9a01ffc3" alt="drawing" width="800"/>
+
 
 ## Source Code & Development
 
