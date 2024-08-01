@@ -10,3 +10,4 @@ build
 dist
 venv
 rules
+UI*.html
