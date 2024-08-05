@@ -178,7 +178,7 @@ NOTE: "rules" Index Name is predefined for Knowledge Graph Index of proofread ad
 
 ### Endpoint 3: CSV Query Engine API
 
-  https://{BASEURL}/ChatWithCSV/run/chat
+  https://{BASEURL}/csvqueryengine/run/chat
 
 #### METHOD
 
