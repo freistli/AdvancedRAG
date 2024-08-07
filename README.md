@@ -24,7 +24,7 @@ It can run as local Docker or put it to Azure Container App, build and perform q
 
 - Recursive Retriever : [LlamaIndex](https://docs.llamaindex.ai/en/stable/examples/retrievers/recursive_retriever_nodes/?h=recursive+retriever)
 
-- Summary Index : [LlamaIndex](https://docs.llamaindex.ai/en/latest/api_reference/indices/summary/)      
+- Summary Index : [LlamaIndex](https://docs.llamaindex.ai/en/stable/examples/index_structs/doc_summary/DocSummary/)      
 
 - CSV Query Engine: [LlamaIndex](https://docs.llamaindex.ai/en/stable/examples/query_engine/pandas_query_engine/)   
 
