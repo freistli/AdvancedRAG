@@ -1,5 +1,5 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM freistli/docaihub:v1.1.6
+FROM freistli/docaihub:latest
 
 EXPOSE 8000
 

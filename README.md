@@ -48,7 +48,7 @@ https://github.com/freistli/AdvancedRAG_SVC
 git clone https://github.com/freistli/AdvancedRAG.git
 ```
 
-2. IMPORTANT: Rename **.env_4_SC.sample** to **.env_4_SC**, input necessary environment variables. 
+2. IMPORTANT: Rename **.env.sample** to **.env**, input necessary environment variables. 
 
    **Azure OpenAI** resource and **Azure Document Intellegency** resource are must required.
 
