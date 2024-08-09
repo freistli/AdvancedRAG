@@ -12,7 +12,7 @@ Thanks to [LLamaIndex Pandas Query Engine](https://docs.llamaindex.ai/en/stable/
 
 ## POC Stage
 
-### Prerequist
+### Prerequisite
 
 #### Deploy below models in Azure OpenAI Service: 
 
