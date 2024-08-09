@@ -18,7 +18,7 @@ Thanks to [LLamaIndex Pandas Query Engine](https://docs.llamaindex.ai/en/stable/
 
     gpt-4o mini or gpt-4o
 
-    text-embedding-ada-002
+    text-embedding-3-small
 
 ### Create Azure Document Intelligent Service, get its Service URL and Key
 
