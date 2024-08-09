@@ -145,7 +145,7 @@ Note: for more details about this sh, can refer to [this guideline](https://lear
 
 After around 7~8 minutes, the Azure Container App will be ready. You can check the output and access it directly:
 
-<img src="./media/4.png" width="500"></img>
+<img src="./media/4.png" width="600"></img>
 
 To protect your container app, can follow this guide to enable authentication on it.
 
@@ -154,8 +154,72 @@ To protect your container app, can follow this guide to enable authentication on
 
 ### Integrate into Copilot Studio
 
+By default, we need to upload a CSV to the AdvRAG service before analysis. The service always saves the uploaded file to its local temp folder on server side. And then we can use temp file path to start the analysis query. 
+
+To skip this step, we can save common files in subfolder **rules** of the AdvancedRAG folder, and then build your docker image. The files will be copy to the docker itself. As a demo, I can put a CSV file in AdvancedRAG/rules/files, and then pubish the docker to Azure.
+
+a. Open [Copilot Studio](https://copilotstudio.microsoft.com/), create a new Topic, use "CSV Query" to trigger it.
+
+b. For demo purpose, I upload a test CSV file and got its path, then put it into a variable:
 
 
+<img src="./media/5.png" width="400"></img>
+
+
+c. Now let's add a Question step to ask what question the user want to ask:
+
+
+<img src="./media/5.1.png" width="400"></img>
+
+
+d. Click "+", "Add an Action", "Create a flow". We will use this new flow to call AdvancedRAG service endpoint.
+
+e. We need Query, File_Path, System_Message as input variables.
+
+
+<img src="./media/5.2.png" width="500"></img>
+
+e. In the flow Editor, let's add an HTTP step. In the step, post the request to the AdvancedRAG endpoint as below:
+
+
+<img src="./media/6.png" width="500"></img>
+
+
+Save the flow as ADVRAGSVC_CSV, and puglish it.
+
+
+f. Back to Copilot Studio topic, we will add the action as below, and set input variables as need:
+
+
+<img src="./media/7.png" width="400"></img>
+
+
+g. Publish and open this Custom Copilot in Teams Channel based on this [guide](https://microsoftlearning.github.io/mslearn-copilotstudio/Instructions/Labs/09-deploy-copilot-teams.html#:~:text=With%20your%20Copilot%20open%20in%20Microsoft%20Copilot%20Studio%2C,and%20shared%20users.%20Select%20your%20user.%20Select%20Share.).
+
+
+h. Now we can test this topic lit this, as we see, even I used gpt-4o-mini here, the response accuracy is very good:
+
+
+<img src="./media/8.png" width="400"></img>
+
+
+From above, it shows how to quickly verify optential useful RAG techs (Pandas Query Engine) in the AdvancedRAG service studio, expose and publish it as REST API endpoint which can be used by other service, such as Copilot Studio. 
+
+
+The overall process can be applied to Knowledge Graph, GraphRAG, Tree Mode Summary and other type indexes with this AdvnacedRAG service. In this way developers can efficiently move from proof of concept to production, leveraging advanced RAG capabilities in their own services. 
+
+## More Information
+
+### How to improve
+The AdvancedRAG service focuses on key logic and stability of different importnat index types, the efficiency to be landed into M365 AI use cases. For any feature improvement ideas, feel free to visit below repos to create issues, fork projects and create PRs. 
+
+Docker Deploy Repo: https://github.com/freistli/AdvancedRAG 
+
+Source Code Repo: https://github.com/freistli/AdvancedRAG_SVC
+
+### General Introduction
+
+[Exploring the Advanced RAG (Retrieval Augmented Generation) Service](https://techcommunity.microsoft.com/t5/modern-work-app-consult-blog/exploring-the-advanced-rag-retrieval-augmented-generation/ba-p/4197836)
 
 
 
