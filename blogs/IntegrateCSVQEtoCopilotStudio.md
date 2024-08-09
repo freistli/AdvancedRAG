@@ -8,7 +8,7 @@ For example, if we have 10,000 rows in a CSV file, when we ask "how many rows do
 
 Thanks to [LLamaIndex Pandas Query Engine](https://docs.llamaindex.ai/en/stable/examples/query_engine/pandas_query_engine/), which provides a good idea of understanding data frame data through natural language way. However to verify its performance among others and integrate to existing Enterprise environment, such as Copilot Studio or other user facing services, it definitely needs AI service developing experience and takes certain learning curve and time efforts from POC to Production.
 
-[Advanced RAG Service](https://techcommunity.microsoft.com/t5/modern-work-app-consult-blog/exploring-the-advanced-rag-retrieval-augmented-generation/ba-p/4197836) supports 6 latest advacned indexing techs including CSV Query Eninge, with it developers can leverage it to shorten development POC stage, and achieve Production purpose. Here is detail step to step guideline:
+[Advanced RAG Service](https://techcommunity.microsoft.com/t5/modern-work-app-consult-blog/exploring-the-advanced-rag-retrieval-augmented-generation/ba-p/4197836) supports 6 latest advanced indexing techs including CSV Query Eninge, with it developers can leverage it to shorten development POC stage, and achieve Production purpose. Here is detail step to step guideline:
 
 ## POC Stage
 
@@ -58,7 +58,7 @@ NOTE:
 
 d. Build your own docker image:
 
-    docker build -t demo
+    docker build -t demo .
 
 e. Run this docker:
 
@@ -87,7 +87,7 @@ b. Click the **Chat Mode** tab, now we can use Natural Language to test how good
 
 The Advanced RAG Service is built with Gradio and FAST API. It opens necessary [API Endpoints](https://github.com/freistli/AdvancedRAG?tab=readme-ov-file#call-advragsvc-through-rest-api-call) by default. We can turn off any of them in the .env settings.
 
-The Chat endpoint can be used for all index types query/search, for example:
+The Chat endpoint can be used for different index types query/search. Since we are using "CSV Query Engine", it now is:
 
     POST {{LocalURL}}/advchatbot/run/chat
     content-type: application/json
@@ -118,9 +118,19 @@ The response is:
     }
 
 
- Using this method, we can easitly integrate the capability to our own service, such as Copilot Stuido.
+ Using this method, we can easily integrate the specific RAG capability to our own service, such as Copilot Studio.
 
 ### Publish and Use in Copilot Studio
+
+We have different methods to release docker as an app service. Here are the generate steps when we use Azure Contain Registry and Azure Container App:
+
+a. Create Azure Container Registry resource [ACRNAME], upload your docker image to it. The command is:
+
+    az login
+    az acr login -n [ACRNAME]
+    docker push [ACRNAME].azurecr.io/docker_image:tag
+
+b. Create an Azure Container App, deploy this docker image and deploy it.
 
 
 
