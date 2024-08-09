@@ -68,20 +68,20 @@ f. Access http://localhost:8000/
 
     Now we can see this service UI
 
-<img src="./media/1.png" width="500"></img>
+<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/1.png" width="500"></img>
 
 ### Evaluate Respone Quality & Performance
 
 a. Click the **CSV Query Engine** tab, upload a test CSV file, click Submit
 
 
-<img src="./media/2.png" width="500"></img>
+<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/2.png" width="500"></img>
 
-<img src="./media/2.1.png" width="500"></img>
+<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/2.1.png" width="500"></img>
 
 b. Click the **Chat Mode** tab, now we can use Natural Language to test how good the CSV Query Engine at understanding CSV content:
 
-<img src="./media/3.png" width="500"></img>
+<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/3.png" width="500"></img>
 
 ### Expose it as a REST API Endpoint
 
@@ -136,16 +136,53 @@ b. Create an Azure Container App, deploy this docker image, and deploy it. Don't
 
 To automate the Azure Container App deployment, I provided [deploy_acr_app.sh](https://github.com/freistli/AdvancedRAG/blob/main/deploy_acr_app.sh) in the repo. 
 
+
+```
+#!/bin/bash
+set -e
+
+if [ $# -eq 0 ]
+then
+echo "No SUF_FIX supplied, it should be an integer or a short string"
+docker image list
+exit 1
+fi
+
+SUF_FIX=$1
+RESOURCE_GROUP="rg-demo-${SUF_FIX}"
+LOCATION="eastus"
+ENVIRONMENT="env-demo-containerapps"
+API_NAME="advrag-demo-${SUF_FIX}"
+FRONTEND_NAME="advrag-ui-${SUF_FIX}"
+TARGET_PORT=8000
+ACR_NAME="advragdemo${SUF_FIX}"
+
+az group create --name $RESOURCE_GROUP --location "$LOCATION"
+
+az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Basic --admin-enabled true
+
+az acr build --registry $ACR_NAME --image $API_NAME .
+
+az containerapp env create --name $ENVIRONMENT --resource-group $RESOURCE_GROUP --location "$LOCATION"
+
+az containerapp create --name $API_NAME --resource-group $RESOURCE_GROUP --environment $ENVIRONMENT --image $ACR_NAME.azurecr.io/$API_NAME --target-port $TARGET_PORT --ingress external --registry-server $ACR_NAME.azurecr.io --query properties.configuration.ingress.fqdn
+
+az containerapp ingress sticky-sessions set -n $API_NAME -g $RESOURCE_GROUP --affinity sticky
+```
+
+
 To use it:
+
 
     chmod a+x deploy_acr_azure.sh
     ./deploy_acr_azure.sh [suffix number]
+
 
 Note: for more details about this sh, can refer to [this guideline](https://learn.microsoft.com/en-us/azure/container-apps/tutorial-code-to-cloud?tabs=bash%2Ccsharp&pivots=acr-remote).
 
 After around 7~8 minutes, the Azure Container App will be ready. You can check the output and access it directly:
 
-<img src="./media/4.png" width="600"></img>
+<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/4.png" width="600"></img>
 
 To protect your container app, can follow this guide to enable authentication on it.
 
@@ -163,13 +200,13 @@ a. Open [Copilot Studio](https://copilotstudio.microsoft.com/), create a new Top
 b. For demo purpose, I upload a test CSV file and got its path, then put it into a variable:
 
 
-<img src="./media/5.png" width="400"></img>
+<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/5.png" width="400"></img>
 
 
 c. Now let's add a Question step to ask what question the user want to ask:
 
 
-<img src="./media/5.1.png" width="400"></img>
+<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/5.1.png" width="400"></img>
 
 
 d. Click "+", "Add an Action", "Create a flow". We will use this new flow to call AdvancedRAG service endpoint.
@@ -177,12 +214,12 @@ d. Click "+", "Add an Action", "Create a flow". We will use this new flow to cal
 e. We need Query, File_Path, System_Message as input variables.
 
 
-<img src="./media/5.2.png" width="500"></img>
+<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/5.2.png" width="500"></img>
 
 e. In the flow Editor, let's add an HTTP step. In the step, post the request to the AdvancedRAG endpoint as below:
 
 
-<img src="./media/6.png" width="500"></img>
+<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/6.png" width="500"></img>
 
 
 Save the flow as ADVRAGSVC_CSV, and puglish it.
@@ -191,7 +228,7 @@ Save the flow as ADVRAGSVC_CSV, and puglish it.
 f. Back to Copilot Studio topic, we will add the action as below, and set input variables as need:
 
 
-<img src="./media/7.png" width="400"></img>
+<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/7.png" width="400"></img>
 
 
 g. Publish and open this Custom Copilot in Teams Channel based on this [guide](https://microsoftlearning.github.io/mslearn-copilotstudio/Instructions/Labs/09-deploy-copilot-teams.html#:~:text=With%20your%20Copilot%20open%20in%20Microsoft%20Copilot%20Studio%2C,and%20shared%20users.%20Select%20your%20user.%20Select%20Share.).
@@ -200,7 +237,7 @@ g. Publish and open this Custom Copilot in Teams Channel based on this [guide](h
 h. Now we can test this topic lit this, as we see, even I used gpt-4o-mini here, the response accuracy is very good:
 
 
-<img src="./media/8.png" width="400"></img>
+<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/8.png" width="400"></img>
 
 
 From above, it shows how to quickly verify optential useful RAG techs (Pandas Query Engine) in the AdvancedRAG service studio, expose and publish it as REST API endpoint which can be used by other service, such as Copilot Studio. 
