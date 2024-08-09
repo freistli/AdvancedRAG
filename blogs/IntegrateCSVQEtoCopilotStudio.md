@@ -58,11 +58,11 @@ NOTE:
 
 d. Build your own docker image:
 
-    docker build -t demo .
+    docker build -t dockerimage:tag .
 
 e. Run this docker:
 
-    docker run -p 8000:8000 demo
+    docker run -p 8000:8000 dockerimage:tag
 
 f. Access http://localhost:8000/    
 
@@ -70,7 +70,7 @@ f. Access http://localhost:8000/
 
 <img src="./media/1.png" width="500"></img>
 
-### Check Respone Performance
+### Evaluate Respone Quality & Performance
 
 a. Click the **CSV Query Engine** tab, upload a test CSV file, click Submit
 
@@ -83,11 +83,11 @@ b. Click the **Chat Mode** tab, now we can use Natural Language to test how good
 
 <img src="./media/3.png" width="500"></img>
 
-### Expose it as a REST API endpoint
+### Expose it as a REST API Endpoint
 
 The Advanced RAG Service is built with Gradio and FAST API. It opens necessary [API Endpoints](https://github.com/freistli/AdvancedRAG?tab=readme-ov-file#call-advragsvc-through-rest-api-call) by default. We can turn off any of them in the .env settings.
 
-The Chat endpoint can be used for different index types query/search. Since we are using "CSV Query Engine", it now is:
+The Chat endpoint can be used for different index types query/search. Since we are using "CSV Query Engine", now it is:
 
     POST {{LocalURL}}/advchatbot/run/chat
     content-type: application/json
@@ -118,34 +118,41 @@ The response is:
     }
 
 
- Using this method, we can easily integrate the specific RAG capability to our own service, such as Copilot Studio.
+ Using this method, we can easily integrate the specific RAG capability to our own service, such as Copilot Studio. Before that, let's publish the service first.
 
-### Publish and Use in Copilot Studio
+### Publish to Azure
 
-We have different methods to release docker as an app service. Here are the generate steps when we use Azure Contain Registry and Azure Container App:
+We have different methods to release docker as an app service. Here are the generate steps when we use Azure Contain Registry and Azure Container App. 
 
-a. Create Azure Container Registry resource [ACRNAME], upload your docker image to it. The command is:
+a. Create Azure Container Registry resource [ACRNAME], upload your tested docker image to it. The command is:
 
     az login
     az account set -s [your subscription]
     az acr login -n [ACRNAME]
-    docker push [ACRNAME].azurecr.io/docker_image:tag
+    docker push [ACRNAME].azurecr.io/dockerimage:tag
 
 b. Create an Azure Container App, deploy this docker image, and deploy it. Don't forget enable Session Affinity for the Container App.
 
-To automate the Azure Container App deployment, I provided a bash file in the repo. To use it:
+
+To automate the Azure Container App deployment, I provided [deploy_acr_app.sh](https://github.com/freistli/AdvancedRAG/blob/main/deploy_acr_app.sh) in the repo. 
+
+To use it:
 
     chmod a+x deploy_acr_azure.sh
-    deploy_acr_azure.sh [suffix number]
+    ./deploy_acr_azure.sh [suffix number]
+
+Note: for more details about this sh, can refer to [this guideline](https://learn.microsoft.com/en-us/azure/container-apps/tutorial-code-to-cloud?tabs=bash%2Ccsharp&pivots=acr-remote).
 
 After around 7~8 minutes, the Azure Container App will be ready. You can check the output and access it directly:
 
 <img src="./media/4.png" width="500"></img>
 
-Note: To protect your container app, can follow this guide to enable authentication on it.
+To protect your container app, can follow this guide to enable authentication on it.
 
 [Enable authentication and authorization in Azure Container Apps with Microsoft Entra ID](https://learn.microsoft.com/en-us/azure/container-apps/authentication-entra)
 
+
+### Integrate into Copilot Studio
 
 
 
