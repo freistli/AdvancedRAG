@@ -237,7 +237,7 @@ g. Publish and open this Custom Copilot in Teams Channel based on this [guide](h
 h. Now we can test this topic lit this, as we see, even I used gpt-4o-mini here, the response accuracy is very good:
 
 
-<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/8.png" width="400"></img>
+<img src="https://raw.githubusercontent.com/freistli/AdvancedRAG/main/blogs/media/8.png" width="600"></img>
 
 
 From above, it shows how to quickly verify optential useful RAG techs (Pandas Query Engine) in the AdvancedRAG service studio, expose and publish it as REST API endpoint which can be used by other service, such as Copilot Studio. 
