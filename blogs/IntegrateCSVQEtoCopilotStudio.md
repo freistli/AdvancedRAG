@@ -127,11 +127,24 @@ We have different methods to release docker as an app service. Here are the gene
 a. Create Azure Container Registry resource [ACRNAME], upload your docker image to it. The command is:
 
     az login
+    az account set -s [your subscription]
     az acr login -n [ACRNAME]
     docker push [ACRNAME].azurecr.io/docker_image:tag
 
-b. Create an Azure Container App, deploy this docker image and deploy it.
+b. Create an Azure Container App, deploy this docker image, and deploy it. Don't forget enable Session Affinity for the Container App.
 
+To automate the Azure Container App deployment, I provided a bash file in the repo. To use it:
+
+    chmod a+x deploy_acr_azure.sh
+    deploy_acr_azure.sh [suffix number]
+
+After around 7~8 minutes, the Azure Container App will be ready. You can check the output and access it directly:
+
+<img src="./media/4.png" width="500"></img>
+
+Note: To protect your container app, can follow this guide to enable authentication on it.
+
+[Enable authentication and authorization in Azure Container Apps with Microsoft Entra ID](https://learn.microsoft.com/en-us/azure/container-apps/authentication-entra)
 
 
 
