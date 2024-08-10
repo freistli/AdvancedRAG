@@ -243,11 +243,13 @@ h. Now we can test this topic lit this, as we see, even I used gpt-4o-mini here,
 From above, it shows how to quickly verify optential useful RAG techs (Pandas Query Engine) in the AdvancedRAG service studio, expose and publish it as REST API endpoint which can be used by other service, such as Copilot Studio. 
 
 
-The overall process can be applied to Knowledge Graph, GraphRAG, Tree Mode Summary and other type indexes with this AdvnacedRAG service. In this way developers can efficiently move from proof of concept to production, leveraging advanced RAG capabilities in their own services. 
+The overall process can be applied to Knowledge Graph, GraphRAG, Tree Mode Summary and other type indexes with this AdvnacedRAG service. The main difference is for CSV, we can use its file path as the index name directly, for other indexes, we need to build index firstly, and then use index folder path as Index name. In this way developers can efficiently move from proof of concept to production, leveraging advanced RAG capabilities in their own services. 
+
 
 ## More Information
 
 ### How to improve
+
 The AdvancedRAG service focuses on key logic and stability of different importnat index types, the efficiency to be landed into M365 AI use cases. For any feature improvement ideas, feel free to visit below repos to create issues, fork projects and create PRs. 
 
 Docker Deploy Repo: https://github.com/freistli/AdvancedRAG 
