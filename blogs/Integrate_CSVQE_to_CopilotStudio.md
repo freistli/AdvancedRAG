@@ -175,6 +175,8 @@ To use it:
 
 
     chmod a+x deploy_acr_azure.sh
+    az login
+    az account set -s [your subscription]
     ./deploy_acr_azure.sh [suffix number]
 
 
