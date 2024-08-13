@@ -85,7 +85,7 @@ if [ $# -ge 2 ]; then
     exit 1
   fi
 else
-  for step in {1..5}; do
+  for step in {1..6}; do
     execute_step $step
   done
 fi
