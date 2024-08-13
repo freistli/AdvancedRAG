@@ -15,6 +15,16 @@ print_help() {
   echo "  $0 01"
   echo "  $0 demo01 3"
   echo "  $0 demo 2-4"
+
+  echo "Steps:"
+    echo "  1. Create Resource Group"
+    echo "  2. Create Azure Container Registry"
+    echo "  3. Build and Push Docker Image to Azure Container Registry"
+    echo "  4. Create Azure Container App Environment"
+    echo "  5. Create Azure Container App"
+    echo "  6. Set Session Affinity for App Frontend"
+    echo "  7. Create User Assigned Identity"
+    echo "  8. Assign User Assigned Identity to Container App"
 }
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
@@ -38,7 +48,7 @@ API_NAME="advrag-${ORAG_NAME}-${SUF_FIX}"
 FRONTEND_NAME="advrag-ui-${SUF_FIX}"
 TARGET_PORT=8000
 ACR_NAME="advrag${ORAG_NAME}${SUF_FIX}"
-
+USER_ASSIGNED_IDENTITY_NAME="user-${ORAG_NAME}-${SUF_FIX}"
 
 execute_step() {
   case $1 in
@@ -66,6 +76,14 @@ execute_step() {
         echo "6. Set Session Affinity for App Frontend $FRONTEND_NAME in $ENVIRONMENT" 
         az containerapp ingress sticky-sessions set -n $API_NAME -g $RESOURCE_GROUP --affinity sticky
         ;;
+    7)
+        echo "7. Create User Assigned Identity $USER_ASSIGNED_IDENTITY_NAME" 
+        az identity create -g $RESOURCE_GROUP -n $USER_ASSIGNED_IDENTITY_NAME
+        ;;
+    8)     
+        echo "8. Assigning User Assigned Identity $USER_ASSIGNED_IDENTITY_NAME to Container App $API_NAME" 
+        az containerapp identity assign --name $API_NAME --resource-group $RESOURCE_GROUP --user-assigned $(az identity show -g $RESOURCE_GROUP -n $USER_ASSIGNED_IDENTITY_NAME --query id -o tsv)
+        ;;
     *)
         echo "Invalid step: $1"
         ;;
@@ -85,7 +103,7 @@ if [ $# -ge 2 ]; then
     exit 1
   fi
 else
-  for step in {1..6}; do
+  for step in {1..8}; do
     execute_step $step
   done
 fi

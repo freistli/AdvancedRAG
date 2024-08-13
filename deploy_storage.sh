@@ -15,6 +15,21 @@ print_help() {
   echo "  $0 01"
   echo "  $0 demo01 3"
   echo "  $0 demo 2-4"
+
+  echo "Steps:"
+    echo "  1. Create Resource Group"
+    echo "  2. Create Storage Account"
+    echo "  3. Create Storage Share"
+    echo "  4. Create Storage Directory for Files"
+    echo "  5. Create Storage Directory for Indexes"
+    echo "  6. Create User Assigned Identity"
+    echo "  7. Assign User Assigned Identity to Container App"
+    echo "  8. Assign User Assigned Identity to Storage Account"
+    echo "  9. Set up Azure File Storage Link for Environment"
+    echo "  10. List Azure File Storage Link for Environment"
+    echo "  11. Show container app config yaml"
+    echo "  12. Press Enter after yaml file modified"
+    echo "  13. Update container app config"
 }
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
@@ -45,6 +60,7 @@ SHARE_NAME="share${ORAG_NAME}${SUF_FIX}"
 API_NAME="advrag-${ORAG_NAME}-${SUF_FIX}"
 FILE_DIRECTORY_NAME="files"
 INDEX_DIRECTORY_NAME="indexes"
+ENVIRONMENT="env-${ORAG_NAME}-containerapps"
 
 execute_step() {
   case $1 in
@@ -79,8 +95,34 @@ execute_step() {
         ;;
     8)
         echo "8. Assigning User Assigned Identity $USER_ASSIGNED_IDENTITY_NAME to Storage Account $STORAGE_ACCOUNT_NAME as Role [Storage Blob Data Contributor]" 
-        az role assignment create --role "Storage Blob Data Contributor" --assignee-object-id $(az identity show -g $RESOURCE_GROUP -n $USER_ASSIGNED_IDENTITY_NAME --query principalId -o tsv) --scope $(az storage account show -n $STORAGE_ACCOUNT_NAME -g $RESOURCE_GROUP --query id -o tsv)
-        ;;  
+        az role assignment create --role "Storage Blob Data Contributor" --assignee-object-id $(az identity show -g $RESOURCE_GROUP -n $USER_ASSIGNED_IDENTITY_NAME --query principalId -o tsv) --scope $(az storage account show -n $STORAGE_ACCOUNT_NAME -g $RESOURCE_GROUP --query id -o tsv )
+        ;;  \
+    9)
+        echo "9. Setting up Azure File Storage Link for Environment $ENVIRONMENT"
+        ## Get storage account key
+        STORAGE_ACCOUNT_KEY=$(az storage account keys list -n $STORAGE_ACCOUNT_NAME --query "[0].value" -o tsv)
+                
+        ##Create the storage link in the environment.
+        STORAGE_MOUNT_NAME="azurefile-$STORAGE_ACCOUNT_NAME-$SHARE_NAME"
+        az containerapp env storage set --name $ENVIRONMENT --access-mode ReadWrite --azure-file-account-name $STORAGE_ACCOUNT_NAME --azure-file-account-key $STORAGE_ACCOUNT_KEY --azure-file-share-name $SHARE_NAME --storage-name $STORAGE_MOUNT_NAME --resource-group $RESOURCE_GROUP        
+        ;;
+    10)
+        echo "10. List Azure File Storage Link for Environment in Resource Group $RESOURCE_GROUP"
+        RESULT_STEP10=$(az containerapp env storage list --name $ENVIRONMENT --resource-group $RESOURCE_GROUP --query "[0].name" -o tsv)
+        echo "azure file mounted: $RESULT_STEP10"
+        ;;
+    11)
+        echo "11. Show container app config yaml"
+        az containerapp show --name $API_NAME --resource-group $RESOURCE_GROUP -o yaml > $API_NAME.yaml
+        echo "Container App Config saved to $API_NAME.yaml, follow the guide https://learn.microsoft.com/en-us/azure/container-apps/storage-mounts-azure-files?tabs=bash#create-the-storage-mount to modify yaml"
+        ;;
+    12) echo "12. Press Enter after yaml file modified"
+        read -p "Press Enter to continue"
+        ;;
+    13)
+        echo "13. Update container app config"
+        az containerapp update --resource-group $RESOURCE_GROUP --name $API_NAME --yaml $API_NAME.yaml -o table
+        ;;
     *)
         echo "Invalid step: $1"
         ;;
@@ -100,7 +142,7 @@ if [ $# -ge 2 ]; then
     exit 1
   fi
 else
-  for step in {1..8}; do
+  for step in {1..13}; do
     execute_step $step
   done
 fi

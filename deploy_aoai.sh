@@ -16,6 +16,16 @@ print_help() {
   echo "  $0 01"
   echo "  $0 demo01 3"
   echo "  $0 demo 2-4"
+  echo "Steps:"
+    echo "  1. Create Resource Group"
+    echo "  2. Create Azure OpenAI Cognitive Services Account"
+    echo "  3. Create Azure Cognitive Services Account Deployment for LLM Model"
+    echo "  4. Create Azure Cognitive Services Account Deployment for Embedding Model"
+    echo "  5. Create Azure Form Recognizer Cognitive Services Account"
+    echo "  6. Create User Assigned Identity"
+    echo "  7. Assign User Assigned Identity to Azure Cognitive Services Account"
+    echo "  8. Assign User Assigned Identity to Azure Form Recognizer Cognitive Services Account"   
+    
 }
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
@@ -40,6 +50,7 @@ DOC_AI_NAME="docai-${ORAG_NAME}-${SUF_FIX}"
 LLM_MODEL="gpt-4o-mini"
 LLM_MODEL_VERSION="2024-07-18"
 EMBEDDING_MODEL="text-embedding-3-small"
+USER_ASSIGNED_IDENTITY_NAME="user-${ORAG_NAME}-${SUF_FIX}"
 
 execute_step() {
   case $1 in
@@ -62,7 +73,20 @@ execute_step() {
     5)
       echo "5. Creating Azure Form Recognizer Cognitive Services Account $DOC_AI_NAME in $LOCATION" 
       az cognitiveservices account create --name $DOC_AI_NAME --resource-group $RESOURCE_GROUP --kind FormRecognizer --sku s0 --location $LOCATION --yes
+      ;;    
+    6)
+      echo "6. Create User Assigned Identity $USER_ASSIGNED_IDENTITY_NAME" 
+      az identity create -g $RESOURCE_GROUP -n $USER_ASSIGNED_IDENTITY_NAME
       ;;
+    7)     
+      echo "7. Assign Access Role to User Assigned Identity $USER_ASSIGNED_IDENTITY_NAME to Azure Cognitive Services Account $AOAI_NAME"
+      az role assignment create --role "Cognitive Services Contributor" --assignee-object-id $(az identity show -g $RESOURCE_GROUP -n $USER_ASSIGNED_IDENTITY_NAME --query principalId -o tsv) --scope $(az cognitiveservices account show -n $AOAI_NAME -g $RESOURCE_GROUP --query id -o tsv )      
+      ;;
+    8)
+      echo "8. Assign Access Role to User Assigned Identity $USER_ASSIGNED_IDENTITY_NAME to Azure Form Recognizer Cognitive Services Account $DOC_AI_NAME"
+      az role assignment create --role "Cognitive Services Contributor" --assignee-object-id $(az identity show -g $RESOURCE_GROUP -n $USER_ASSIGNED_IDENTITY_NAME --query principalId -o tsv) --scope $(az cognitiveservices account show -n $DOC_AI_NAME -g $RESOURCE_GROUP --query id -o tsv )  
+      ;;
+    
     *)
       echo "Invalid step: $1"
       ;;
@@ -81,7 +105,7 @@ if [ $# -ge 2 ]; then
     exit 1
   fi
 else
-  for step in {1..5}; do
+  for step in {1..8}; do
     execute_step $step
   done
 fi

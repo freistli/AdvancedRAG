@@ -28,3 +28,4 @@ build
 dist
 venv
 WinAdvRAGSvc.exe
+*.yaml
