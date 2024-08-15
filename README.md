@@ -36,7 +36,7 @@ It can run as local Docker or put it to Azure Container App, build and perform q
 
 ## Latest Features Update
 
-Read in [Change Log](CHANGLOG.md)
+Read in [Change Log](CHANGELOG.md)
 
 ## Source Code & Development
 
