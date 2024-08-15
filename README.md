@@ -60,6 +60,8 @@ git clone https://github.com/freistli/AdvancedRAG.git
    **MS GRAPHRAG** is optional. If you want to use it please go through these steps to create GraphRAG backend service on Azure:
    https://github.com/azure-samples/graphrag-accelerator
 
+    Check [Parameters](./Parameters.md) for more details.
+
 3. Build docker image
 
 ```
