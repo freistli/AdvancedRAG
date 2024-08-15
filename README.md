@@ -10,15 +10,15 @@ Advanced RAG AI Service running in Docker, it can be used as
 
 
 ## Introduction
-The service can help developers quickly verify diffrent RAG indexing techniques (about accuracy and performance) for their own user cases, from Index Generation to verify the output through Chat Mode and Proofreading mode.
+The service can help developers quickly verify different RAG indexing techniques (about accuracy and performance) for their own user cases, from Index Generation to verify the output through Chat Mode and Proofreading mode.
 
-It can run as local Docker or put it to Azure Container App, build and perform queries on multiple importnat Index types. Below is the info about index types and how the project implements them:
+It can run as local Docker or put it to Azure Container App, build and perform queries on multiple important Index types. Below is the info about index types and how the project implements them:
       
 - Azure AI Search : Azure AI Search Python SDK + [Hybrid Semantic Search](https://techcommunity.microsoft.com/t5/ai-azure-ai-services-blog/azure-ai-search-outperforming-vector-search-with-hybrid/ba-p/3929167) + [Sub Question Query](https://docs.llamaindex.ai/en/v0.10.17/api_reference/query/query_engines/sub_question_query_engine.html)
 
-- MS GraghRAG Local : REST APIs Provided by [GraghRAG accelerator](https://github.com/azure-samples/graphrag-accelerator)
+- MS GraphRAG Local : REST APIs Provided by [GraphRAG accelerator](https://github.com/azure-samples/graphrag-accelerator)
   
-- MS GraghRAG Global : REST APIs Provided by [GraghRAG accelerator](https://github.com/azure-samples/graphrag-accelerator)
+- MS GraphRAG Global : REST APIs Provided by [GraphRAG accelerator](https://github.com/azure-samples/graphrag-accelerator)
 
 - Knowledge Graph : [LlamaIndex](https://docs.llamaindex.ai/en/stable/examples/index_structs/knowledge_graph/KnowledgeGraphDemo/)
 
@@ -53,7 +53,7 @@ git clone https://github.com/freistli/AdvancedRAG.git
 
 2. IMPORTANT: Rename **.env.sample** to **.env**, input necessary environment variables. 
 
-   **Azure OpenAI** resource and **Azure Document Intellegency** resource are must required.
+   **Azure OpenAI** resource and **Azure Document Intelligence** resource are must required.
 
    **Azure AI Search** is optional if you don't build Azure AI Search index or use it.
 
@@ -81,9 +81,9 @@ http://localhost:8000
 
 ## Run it on Azure Container App
 
-1. Publish your image to Azure Container Registry or Docke Hub
+1. Publish your image to Azure Container Registry or Docker Hub
 
-2. Create Azure Container App, choose the docker image you published, and then deploy the revision pod witout any extra command.
+2. Create Azure Container App, choose the docker image you published, and then deploy the revision pod without any extra command.
 
 Note: If you don't use .env in image, can set environment variables in the Azure Container App.
 
@@ -93,7 +93,7 @@ Note: If you don't use .env in image, can set environment variables in the Azure
 1. Click one Index Build tab
 2. Upload a file to file section
 
-   Note:  The backend is Azure Document Intellegence to read the content, in general it supports lots of file formats, recommend to use PDF (print it as PDF) if the content is complicated
+   Note:  The backend is Azure Document Intelligence to read the content, in general it supports lots of file formats, recommend to use PDF (print it as PDF) if the content is complicated
 
    
 3. Click Submit
@@ -128,7 +128,7 @@ NOTE: You can use the same way to store CSV files, build them with docker if you
 
 ## Call ADVRAGSVC through REST API CALL
 
-### Endpoint 1: Chat Api
+### Endpoint 1: Chat API
 
   https://{BASEURL}/advchatbot/run/chat
 

@@ -1,4 +1,4 @@
-## The Parameters used as Environment Varaibles (1.2.0)
+## The Parameters used as Environment Variables (1.2.0)
 
 
 | Parameter                                 | Description                                                                                                                                                                                                                  |
