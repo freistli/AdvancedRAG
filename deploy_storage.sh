@@ -59,7 +59,7 @@ STORAGE_ACCOUNT_NAME="st${ORAG_NAME}${SUF_FIX}"
 SHARE_NAME="share${ORAG_NAME}${SUF_FIX}"
 API_NAME="advrag-${ORAG_NAME}-${SUF_FIX}"
 FILE_DIRECTORY_NAME="files"
-INDEX_DIRECTORY_NAME="indexes"
+INDEX_DIRECTORY_NAME="index_cache"
 ENVIRONMENT="env-${ORAG_NAME}-containerapps"
 
 execute_step() {

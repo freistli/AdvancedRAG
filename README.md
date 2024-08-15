@@ -34,6 +34,9 @@ It can run as local Docker or put it to Azure Container App, build and perform q
 
 <img src="https://github.com/user-attachments/assets/42b556a2-2862-4dc0-9511-25dd9a01ffc3" alt="drawing" width="800"/>
 
+## Latest Features Update
+
+Read in [Change Log](CHANGLOG.md)
 
 ## Source Code & Development
 
@@ -80,7 +83,7 @@ http://localhost:8000
 
 2. Create Azure Container App, choose the docker image you published, and then deploy the revision pod witout any extra command.
 
-Note: If you don't use .env_4_SC in image, can set environment variables in the Azure Container App.
+Note: If you don't use .env in image, can set environment variables in the Azure Container App.
 
 
 ## Build Index
