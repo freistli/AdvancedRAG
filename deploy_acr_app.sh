@@ -84,6 +84,10 @@ execute_step() {
         echo "8. Assigning User Assigned Identity $USER_ASSIGNED_IDENTITY_NAME to Container App $API_NAME" 
         az containerapp identity assign --name $API_NAME --resource-group $RESOURCE_GROUP --user-assigned $(az identity show -g $RESOURCE_GROUP -n $USER_ASSIGNED_IDENTITY_NAME --query id -o tsv)
         ;;
+    9)
+        echo "9. Redeploy Azure Container App $API_NAME in $ENVIRONMENT"
+        az containerapp up --name $API_NAME --image $ACR_NAME.azurecr.io/$API_NAME  --ingress external --target-port $TARGET_PORT --resource-group $RESOURCE_GROUP
+        ;;
     *)
         echo "Invalid step: $1"
         ;;
@@ -103,7 +107,7 @@ if [ $# -ge 2 ]; then
     exit 1
   fi
 else
-  for step in {1..8}; do
+  for step in {1..9}; do
     execute_step $step
   done
 fi
