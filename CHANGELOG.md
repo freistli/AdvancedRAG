@@ -1,4 +1,14 @@
+## 08/20/2024 [1.2.3]
+
+Add citation features for Azure AI Search, Knowledge Graph, Tree Mode Summary, Recursive Receiver Index.
+
+Show citations in Proofread directly.
+
+OpenAPIs can return citations by default with response.
+
+
 ## 08/16/2024 [1.2.1]
+
 1. Add Swagger 2.0, OpenAPI 3.0 URLs:
 
    /api/info/2
