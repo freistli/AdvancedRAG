@@ -4,7 +4,10 @@ Advanced RAG AI Service running in Docker, it can be used as
 
 1. Quick MVP/POCm playground to verify which Index type can exactly address the specific (usually related to accuracy) LLM RAG use case.
 
-2. Http Clients and MS Office Word/Outlook Add-In can easily use proper vector index types to search doc info and generate LLM response from the service.
+2. [OpenAPI interface](https://github.com/freistli/AdvancedRAG/blob/main/CHANGELOG.md#08162024-121) and Gradio REST API interface are supported.
+
+    Http Clients, Power platform workflow, and MS Office Word/Outlook Add-In can easily use proper vector index types to search doc info and generate LLM response from the service.
+
 
 <img src="https://github.com/user-attachments/assets/71ca8893-e5f7-4f1b-9306-353cf599f333" alt="drawing" width="400"/>
 
@@ -110,7 +113,9 @@ Note: If you don't use .env in image, can set environment variables in the Azure
 
   ![image](https://github.com/user-attachments/assets/a7001056-09b9-4d7f-a08e-22d71fa865da)
 
+  ![image](https://techcommunity.microsoft.com/t5/image/serverpage/image-id/608416iF3ADEB8A991407A0/image-size/large?v=v2&px=999)
 
+  
 ## (Optional) Setup Your Own Index in the Docker Image
 
 Developers can use their own indexes folders for the docker image:
@@ -210,6 +215,10 @@ NOTE: "rules" Index Name is predefined for Knowledge Graph Index of proofread ad
 ## Consume the service in Office Add-In (use Proofread Addin use case)
 
 Check: https://github.com/freistli/ProofreadAddin
+
+## Integrate to Copilot Studio
+
+[Step by Step: Integrate Advanced RAG Service with Your Own Data into Copilot Studio](https://techcommunity.microsoft.com/t5/modern-work-app-consult-blog/step-by-step-integrate-advanced-rag-service-with-your-own-data/ba-p/4215097)
 
 ## Try your index in Chat Mode
 
