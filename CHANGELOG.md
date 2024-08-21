@@ -1,10 +1,18 @@
 ## 08/20/2024 [1.2.3]
 
-Add citation features for Azure AI Search, Knowledge Graph, Tree Mode Summary, Recursive Receiver Index.
+Add citation features for Azure AI Search, Knowledge Graph, Tree Mode Summary, Recursive Receiver Index. Show indexes in response, show citations source in OpenAPI response.
+
+![image](/blogs/media/11.png)
 
 Show citations in Proofread directly.
 
 OpenAPIs can return citations by default with response.
+
+
+![image](/blogs/media/13.png)
+
+
+![image](/blogs/media/12.png)
 
 
 ## 08/16/2024 [1.2.1]
