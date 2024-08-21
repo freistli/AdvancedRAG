@@ -99,23 +99,22 @@ Note: If you don't use .env in image, can set environment variables in the Azure
    Note:  The backend is Azure Document Intelligence to read the content, in general it supports lots of file formats, recommend to use PDF (print it as PDF) if the content is complicated
 
    
-3. Click Submit
+3. Input an Index name, click Submit
 4. Wait till the index building completed, the right pane will update the status in real time.
 5. After you see this words, means it is completed:
 
 ```
-2024-06-13T10:04:54.120027: Index is persisted in /tmp/index_cache/yourfilename
+2024-06-13T10:04:54.120027: Index is persisted in /tmp/index_cache/yourindexname
 ```
 
-**/tmp/index_cache/yourfilename** can be used as your Index name.
+**/tmp/index_cache/yourindexname** or **yourindexname** can be used as your Index name.
 
 6. You can download the index files to local by clicking the Download Index button, so that can use it in your own docker image
 
-  ![image](https://github.com/user-attachments/assets/a7001056-09b9-4d7f-a08e-22d71fa865da)
+  ![image](/blogs/media/9.png)
 
-  ![image](https://techcommunity.microsoft.com/t5/image/serverpage/image-id/608416iF3ADEB8A991407A0/image-size/large?v=v2&px=999)
+  ![image](/blogs/media/10.png)
 
-  
 ## (Optional) Setup Your Own Index in the Docker Image
 
 Developers can use their own indexes folders for the docker image:
