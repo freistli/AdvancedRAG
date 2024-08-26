@@ -10,6 +10,10 @@ Default_Streaming = 'False'
 
 Improve OpenAPI response structure, Copilot OpenAPI Plugin can easily handle it
 
+   /openapi/info/2
+
+   /openapi/info/3
+
 ```
 {
   "response": "string",
@@ -41,9 +45,9 @@ OpenAPIs can return citations by default with response.
 
 1. Add Swagger 2.0, OpenAPI 3.0 URLs:
 
-   /api/info/2
+   /openapi/info/2
 
-   /api/info/3
+   /openapi/info/3
 
 2. Add OpenAPI API Call: /api/chat
 
