@@ -1,3 +1,25 @@
+## 08/26/2024 [1.2.5]
+
+Accept default parameters for OpenAPI interface, add config in .env.sample
+
+```
+Default_Index_Type = 'Knowledge Graph'
+Default_Index_Name = 'KGWORK02'
+Default_Streaming = 'False'
+```
+
+Improve OpenAPI response structure, Copilot OpenAPI Plugin can easily handle it
+
+```
+{
+  "response": "string",
+  "citations": [
+    "string"
+  ]
+}
+```
+![image](./blogs/media/14.png)
+
 ## 08/20/2024 [1.2.3]
 
 Add citation features for Azure AI Search, Knowledge Graph, Tree Mode Summary, Recursive Receiver Index. Show indexes in response, show citations source in OpenAPI response.
