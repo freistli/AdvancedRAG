@@ -25,6 +25,7 @@ print_help() {
     echo "  6. Set Session Affinity for App Frontend"
     echo "  7. Create User Assigned Identity"
     echo "  8. Assign User Assigned Identity to Container App"
+    echo "  9. Redeploy Azure Container App"
 }
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
