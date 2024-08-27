@@ -1,3 +1,14 @@
+## 08/27/2024 [1.2.7]
+
+Add real time RAG for Tree Mode Summary and Recursive Retriever.
+
+Add Complete Mode to as real time RAG UI.
+
+Reference content can be doc strings and URL.
+
+![image](/blogs/media/15.png)
+
+
 ## 08/26/2024 [1.2.5]
 
 Accept default parameters for OpenAPI interface, add config in .env.sample
