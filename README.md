@@ -4,7 +4,7 @@ Advanced RAG AI Service running in Docker, it can be used as
 
 1. Quick MVP/POCm playground to verify which Index type can exactly address the specific (usually related to accuracy) LLM RAG use case.
 
-2. [OpenAPI interface](https://github.com/freistli/AdvancedRAG/blob/main/CHANGELOG.md#08162024-121) and Gradio REST API interface are supported.
+2. [OpenAPI interface](https://github.com/freistli/AdvancedRAG/blob/main/blogs/Call_AdvRag_API.md) and Gradio REST API interface are supported.
 
     Http Clients, Power platform workflow, and MS Office Word/Outlook Add-In can easily use proper vector index types to search doc info and generate LLM response from the service.
 
