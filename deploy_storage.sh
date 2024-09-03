@@ -45,7 +45,7 @@ exit 1
 fi
 
 #Non-Capitalized variables are used to avoid conflicts with environment variables
-ORAG_NAME="demo"
+ORAG_NAME="mwai"
 SUF_FIX=$1
 RESOURCE_GROUP="rg-${ORAG_NAME}-${SUF_FIX}"
 LOCATION="eastus"

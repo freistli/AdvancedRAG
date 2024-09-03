@@ -41,7 +41,7 @@ exit 1
 fi
 
 
-ORAG_NAME="demo"
+ORAG_NAME="mwai"
 SUF_FIX=$1
 RESOURCE_GROUP="rg-${ORAG_NAME}-${SUF_FIX}"
 LOCATION="eastus"

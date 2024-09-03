@@ -1,3 +1,7 @@
+## 09/03/2024 [1.2.8]
+
+Improve Sub Query Engine for AOAI + Azure AI Search
+
 ## 08/27/2024 [1.2.7]
 
 Add real time RAG for Tree Mode Summary and Recursive Retriever.
