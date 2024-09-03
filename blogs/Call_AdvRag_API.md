@@ -9,7 +9,7 @@
     This is swagger 2. 
     
     It is for Power Platform Connector access purpose because it only supports swagger 2 spec.
-    
+
 
     http://localhost:8000/openapi/info/3
 
@@ -24,7 +24,7 @@
 
 ### With chat history
 
-POST http://localhost:8000/advchatbot/run/chat
+POST http://localhost:8000/api/chat
 
 content-type: application/json
 
@@ -49,7 +49,7 @@ content-type: application/json
  ### Without chat history
 
  
-POST http://localhost:8000/advchatbot/run/chat
+POST http://localhost:8000/api/chat
 
 content-type: application/json
 
