@@ -31,12 +31,12 @@ content-type: application/json
 ```
  {
  "history": [
-     [
+     
      [
          "What is the main topic of this article?",
          "The main topic of this article is about the Advanced RAG Service Studio."
      ]
-     ]
+     
  ],
  "indexName": "azuresearch_0",
  "indexType": "Azure AI Search",
