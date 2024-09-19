@@ -1,36 +1,67 @@
-# Advanced RAG (Retrieval Augmented Generation) Service
+# Advanced RAG Service - Container Version
 
-Advanced RAG AI Service running in Docker, it can be used as 
+RAG = Retrieval Augmented Generation
 
-1. Quick MVP/POCm playground to verify which Index type can exactly address the specific (usually related to accuracy) LLM RAG use case.
+## Project Overview
+
+This project serves as a quick Minimum Viable Product (MVP) or Proof of Concept (POC) playground. It is designed to verify which type of index can most accurately address specific use cases related to Large Language Models (LLMs) and Retrieval-Augmented Generation (RAG). These use cases are usually concerned with accuracy versus time/cost tradeoffs.
+
+By using a smaller, flexible, multi-algorithm testing environment you can understand the trade-offs on small dataset and measure the return on investment that you will get for the costs of various systems.
+
+## Containerized Advanced RAG
+
+This repository is designed to build a containerized version of the service.
+While the Advanced RAG AI Service runs inside Docker it can be used as both:
+
+1. Quick MVP/POCm playground to verify which Index algorithm and retrieval algorithm can address the specific (accurate) LLM RAG use case.
 
 2. [OpenAPI interface](https://github.com/freistli/AdvancedRAG/blob/main/blogs/Call_AdvRag_API.md) and Gradio REST API interface are supported.
 
-    Http Clients, Power platform workflow, and MS Office Word/Outlook Add-In can easily use proper vector index types to search doc info and generate LLM response from the service.
-
+This means, Http Clients, Power platform workflows, and MS Office Word/Outlook Add-In can easily use proper vector index types to search document information and generate an LLM response using the retrieved infromation.  
 
 <img src="https://github.com/user-attachments/assets/71ca8893-e5f7-4f1b-9306-353cf599f333" alt="drawing" width="400"/>
 
+## Why use AdvancedRAG as a playground?
 
-## Introduction
-The service can help developers quickly verify different RAG indexing techniques (about accuracy and performance) for their own user cases, from Index Generation to verify the output through Chat Mode and Proofreading mode.
+AdvancedRAG provides a valuable playground for building AI-based applications. Here are some reasons why it is useful:
 
-It can run as local Docker or put it to Azure Container App, build and perform queries on multiple important Index types. Below is the info about index types and how the project implements them:
-      
-- Azure AI Search : Azure AI Search Python SDK + [Hybrid Semantic Search](https://techcommunity.microsoft.com/t5/ai-azure-ai-services-blog/azure-ai-search-outperforming-vector-search-with-hybrid/ba-p/3929167) + [Sub Question Query](https://docs.llamaindex.ai/en/v0.10.17/api_reference/query/query_engines/sub_question_query_engine.html)
+1. **Fast start**: AdvancedRAG allows you to quickly explore and experiment with different approaches to obtain accurate responses. This saves you time and effort in finding the best approach for your specific use case.
 
-- MS GraphRAG Local : REST APIs Provided by [GraphRAG accelerator](https://github.com/azure-samples/graphrag-accelerator)
+2. **Multiple options**: With AdvancedRAG, you have access to a wide range of options. You can compare different approaches, prompts, system prompts, and hyperparameters to fine-tune your AI models and improve their performance.
+
+3. **Integration flexibility**: Once you have identified the optimal configuration in the playground, you can easily integrate AdvancedRAG with other parts of your solution using FAST APIs. This enables seamless integration of AI capabilities into your applications.
+
+By leveraging the capabilities of AdvancedRAG, you can accelerate the development of AI-based applications, improve accuracy, and achieve better results in a shorter time frame.
+
+## What's included?
+
+The service can help developers quickly check different RAG indexing techniques for accuracy, performance and computational cost.  They can also explore prompts for generating output or use interactive chat mode questioning of the knowledge in the documents.   An additonal Proofreading mode is supplied to apply a ruleset to a document.
+
+The docker container can be run locally, or in the cloud e.g az an Azure Contasiner Appps.  While running it can build indexes and perform queries using multiple important state of the art Index types to allow them to be tested one after another. More information about these indexes is included below: 
+
+### Azure AI Search:
+
+- Azure AI Search: Azure AI Search Python SDK + [Hybrid Semantic Search](https://techcommunity.microsoft.com/t5/ai-azure-ai-services-blog/azure-ai-search-outperforming-vector-search-with-hybrid/ba-p/3929167) + [Sub Question Query](https://docs.llamaindex.ai/en/v0.10.17/api_reference/query/query_engines/sub_question_query_engine.html)
+   Azure AI Search: Azure AI Search utilizes the Azure AI Search Python SDK along with Hybrid Semantic Search and Sub Question Query techniques. It is commonly used for performing advanced search operations on large datasets, providing accurate and relevant search results.
+
+### GraphRAG provided from MS Research
+  - MS GraghRAG Local: REST APIs Provided by [GraghRAG accelerator](https://github.com/azure-samples/graphrag-accelerator)
+  - MS GraghRAG Global: REST APIs Provided by [GraghRAG accelerator](https://github.com/azure-samples/graphrag-accelerator)
+    - MS GraghRAG Local: MS GraghRAG Local utilizes REST APIs provided by the GraghRAG accelerator. It is a technology used for retrieval-augmented generation, combining retrieval-based methods with generative models to improve the accuracy and relevance of generated content.  
+    
+    Note:  Be aware of costs --this is an advanced technique and uses a significant number of Azure services to create high quality indexes.    https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/
+    
+### Advanced Indexing techniques from LlamdaIndex
+- Knowledge Graph: [LlamaIndex](https://docs.llamaindex.ai/en/stable/examples/index_structs/knowledge_graph/KnowledgeGraphDemo/)
+  - Knowledge Graph: Knowledge Graph is a technology provided by LlamaIndex. It is used for building and querying graph-based knowledge representations, allowing for efficient and comprehensive knowledge retrieval.
+- Recursive Retriever: [LlamaIndex](https://docs.llamaindex.ai/en/stable/examples/retrievers/recursive_retriever_nodes/?h=recursive+retriever)
+  - Recursive Retriever: Recursive Retriever is a technique provided by LlamaIndex. It is used for performing recursive retrieval on hierarchical data structures, enabling efficient and accurate retrieval of information from nested contexts.
+- Summary Index: [LlamaIndex](https://docs.llamaindex.ai/en/latest/api_reference/indices/summary/)
+  - Summary Index: Summary Index is a feature provided by LlamaIndex. It is used for creating and querying summary indices, allowing for quick and concise retrieval of key information from large datasets.
   
-- MS GraphRAG Global : REST APIs Provided by [GraphRAG accelerator](https://github.com/azure-samples/graphrag-accelerator)
-
-- Knowledge Graph : [LlamaIndex](https://docs.llamaindex.ai/en/stable/examples/index_structs/knowledge_graph/KnowledgeGraphDemo/)
-
-- Recursive Retriever : [LlamaIndex](https://docs.llamaindex.ai/en/stable/examples/retrievers/recursive_retriever_nodes/?h=recursive+retriever)
-
-- Summary Index : [LlamaIndex](https://docs.llamaindex.ai/en/stable/examples/index_structs/doc_summary/DocSummary/)      
+  Note:  Be aware of costs -- different indexes use different algorithms and may use more tokens from LLMs.  
 
 - CSV Query Engine: [LlamaIndex](https://docs.llamaindex.ai/en/stable/examples/query_engine/pandas_query_engine/)   
-
 
 <img src="https://github.com/user-attachments/assets/e5d5da11-7091-4565-95ab-b6a1f0918283" alt="drawing" width="800"/>
 
@@ -39,14 +70,13 @@ It can run as local Docker or put it to Azure Container App, build and perform q
 
 ## Latest Features Update
 
-Read in [Change Log](CHANGELOG.md)
+Please check the [Change Log](CHANGELOG.md)
 
 ## Source Code & Development
 
 https://github.com/freistli/AdvancedRAG_SVC
 
 ## Quick Start
-
 
 1. Download the repo:
    
@@ -90,7 +120,6 @@ http://localhost:8000
 
 Note: If you don't use .env in image, can set environment variables in the Azure Container App.
 
-
 ## Build Index
 
 1. Click one Index Build tab
@@ -98,7 +127,6 @@ Note: If you don't use .env in image, can set environment variables in the Azure
 
    Note:  The backend is Azure Document Intelligence to read the content, in general it supports lots of file formats, recommend to use PDF (print it as PDF) if the content is complicated
 
-   
 3. Input an Index name, click Submit
 4. Wait till the index building completed, the right pane will update the status in real time.
 5. After you see this words, means it is completed:
@@ -231,8 +259,6 @@ Check: https://github.com/freistli/ProofreadAddin
 This is specific for Proofread scenario, especially for non-English Languages. It needs you generate Knowlege Graph Index. 
 
 Generating Knowledge Graph Index steps are the same as others.
-
-
 
 ## View Knowledge Graph Index 
 
