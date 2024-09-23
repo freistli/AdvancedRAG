@@ -4,6 +4,27 @@ Support multi-modal input on Completion API layer
 
 Add Auth middleware on API layer
 
+```
+   #Security Settings
+
+   Azure_Build_In_Security = 'False'
+   
+   Validate_Access = 'False'
+   
+   Authorized_Users = 'False'
+   
+   #email address of allowed users, sperated by comma
+   
+   Authorized_Users_List = 'usera@contoso.com,userb@contoso.com'
+   
+   JWKS_URL = 'https://login.microsoftonline.com/common/discovery/keys'
+   
+   AUDIENCE = '00000003-0000-0000-c000-000000000000'
+   
+   ISSUER = 'https://sts.windows.net/yourtenantid/'
+   
+   Debug_Token = 'True'
+```
 
 ## 09/03/2024 [1.2.8]
 
