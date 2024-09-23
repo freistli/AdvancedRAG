@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+
 print_help() {
   echo ""
   echo "Usage: $0 SUF_FIX [STEP]"

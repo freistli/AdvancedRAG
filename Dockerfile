@@ -7,6 +7,7 @@ ARG CACHEBUST=1
 
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE=1
+ENV CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
 
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
