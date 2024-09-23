@@ -1,7 +1,9 @@
 ## 09/23/2024 [1.3.5]
 
 Support multi-modal input on Completion API layer
+
 Add Auth middleware on API layer
+
 
 ## 09/03/2024 [1.2.8]
 
