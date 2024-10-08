@@ -103,7 +103,7 @@ execute_step() {
         STORAGE_ACCOUNT_KEY=$(az storage account keys list -n $STORAGE_ACCOUNT_NAME --query "[0].value" -o tsv)
                 
         ##Create the storage link in the environment.
-        STORAGE_MOUNT_NAME="azurefile-$STORAGE_ACCOUNT_NAME-$SHARE_NAME"
+        STORAGE_MOUNT_NAME="$STORAGE_ACCOUNT_NAME-$SHARE_NAME"
         az containerapp env storage set --name $ENVIRONMENT --access-mode ReadWrite --azure-file-account-name $STORAGE_ACCOUNT_NAME --azure-file-account-key $STORAGE_ACCOUNT_KEY --azure-file-share-name $SHARE_NAME --storage-name $STORAGE_MOUNT_NAME --resource-group $RESOURCE_GROUP        
         ;;
     10)
