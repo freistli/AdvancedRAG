@@ -1,3 +1,7 @@
+## 10/08/2024 [1.3.8]
+
+Support specific TABLEs analysis in multiple PDF files
+
 ## 09/23/2024 [1.3.5]
 
 Support multi-modal input on Completion API layer
