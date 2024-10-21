@@ -1,3 +1,25 @@
+## 10/08/2024 [1.4.2]
+
+Support Managed Identity with "Credential_Free" config in .env
+Support Index Caches
+Support Responses Cache for below index types
+   
+   - Azure AI Search
+
+   - Knowledge Graph
+   
+   - Summary
+
+   - Recursive Retriever
+
+   - Keyword Table
+
+Add Keyword Table Index type
+
+Support Hybrid Search for [Keyword Table Index] and [Knowledge Graph Index]
+
+![image](/blogs/media/16.png)
+
 ## 10/08/2024 [1.3.8]
 
 Support specific TABLEs analysis in multiple PDF files
