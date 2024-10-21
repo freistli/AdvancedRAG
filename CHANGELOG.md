@@ -1,4 +1,4 @@
-## 10/08/2024 [1.4.2]
+## 10/20/2024 [1.4.2]
 
 Support Managed Identity with "Credential_Free" config in .env
 Support Index Caches
