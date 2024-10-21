@@ -2,6 +2,7 @@
 .env_4_SC
 .env_4_VKG
 .env_4_FineTune
+.env.key
 .vscode
 __pycache__
 *.docx
@@ -13,3 +14,4 @@ venv
 rules
 UI*.html
 *.yaml
+azureshare
