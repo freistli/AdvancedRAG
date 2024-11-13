@@ -1,3 +1,9 @@
+## 11/13/2024 [1.5.0]
+
+Add Settings View
+Add Dataset Evaluate function
+
+
 ## 10/20/2024 [1.4.2]
 
 Support Managed Identity with "Credential_Free" config in .env
