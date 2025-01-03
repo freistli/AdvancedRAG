@@ -15,3 +15,5 @@ rules
 UI*.html
 *.yaml
 azureshare
+.env.uat
+.env.prod
