@@ -17,3 +17,4 @@ UI*.html
 azureshare
 .env.uat
 .env.prod
+.env.uat.ui

@@ -1,13 +1,26 @@
+## 01/17/2025 [1.8.7.2]
+
+Implement DateFrame real-time index
+
+Implement RESET API RAG Evaluation Library
+
+Enhance Hybrid Index Search
+
+Upgrade to latest Gradio, LlamaIndex, LangChain
+
 ## 11/13/2024 [1.5.0]
 
 Add Settings View
+
 Add Dataset Evaluate function
 
 
 ## 10/20/2024 [1.4.2]
 
 Support Managed Identity with "Credential_Free" config in .env
+
 Support Index Caches
+
 Support Responses Cache for below index types
    
    - Azure AI Search

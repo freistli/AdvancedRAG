@@ -30,3 +30,6 @@ venv
 WinAdvRAGSvc.exe
 *.yaml
 .env.key
+.env.uat
+.env.prod
+.env.uat.ui
