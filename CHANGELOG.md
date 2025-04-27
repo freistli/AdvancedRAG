@@ -1,3 +1,7 @@
+## 20/04/2025 [1.8.8.3]
+
+Integrate AutoGen and MCP for DataFrame analysis
+
 ## 01/17/2025 [1.8.7.2]
 
 Implement DateFrame real-time index
