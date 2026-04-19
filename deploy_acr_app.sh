@@ -44,13 +44,17 @@ fi
 ORAG_NAME="mwai"
 SUF_FIX=$1
 RESOURCE_GROUP="rg-${ORAG_NAME}-${SUF_FIX}"
-LOCATION="eastus"
+LOCATION="eastus2"
 ENVIRONMENT="env-${ORAG_NAME}-containerapps"
 API_NAME="advrag-${ORAG_NAME}-${SUF_FIX}"
 FRONTEND_NAME="advrag-ui-${SUF_FIX}"
 TARGET_PORT=8000
 ACR_NAME="advrag${ORAG_NAME}${SUF_FIX}"
 USER_ASSIGNED_IDENTITY_NAME="user-${ORAG_NAME}-${SUF_FIX}"
+VNET_NAME="vnet-${ORAG_NAME}-${SUF_FIX}"
+VNET_ADDRESS_PREFIX="10.0.0.0/16"
+INFRA_SUBNET_NAME="snet-containerapps-infra"
+INFRA_SUBNET_PREFIX="10.0.0.0/27"
 
 execute_step() {
   case $1 in
@@ -67,8 +71,47 @@ execute_step() {
         az acr build --registry $ACR_NAME --image $API_NAME .
         ;;
     4)
-        echo "4. Creating Azure Container App Environment $ENVIRONMENT in $LOCATION" 
-        az containerapp env create --name $ENVIRONMENT --resource-group $RESOURCE_GROUP --location "$LOCATION"
+      echo "4. Creating Azure Container App Environment $ENVIRONMENT with VNet $VNET_NAME in $LOCATION"
+
+      if ! az network vnet show --resource-group $RESOURCE_GROUP --name $VNET_NAME >/dev/null 2>&1; then
+        echo "   Creating virtual network $VNET_NAME with address space $VNET_ADDRESS_PREFIX"
+        az network vnet create \
+          --resource-group $RESOURCE_GROUP \
+          --name $VNET_NAME \
+          --location "$LOCATION" \
+          --address-prefixes $VNET_ADDRESS_PREFIX \
+          --subnet-name $INFRA_SUBNET_NAME \
+          --subnet-prefixes $INFRA_SUBNET_PREFIX >/dev/null
+      fi
+
+      if ! az network vnet subnet show --resource-group $RESOURCE_GROUP --vnet-name $VNET_NAME --name $INFRA_SUBNET_NAME >/dev/null 2>&1; then
+        echo "   Creating subnet $INFRA_SUBNET_NAME with prefix $INFRA_SUBNET_PREFIX"
+        az network vnet subnet create \
+          --resource-group $RESOURCE_GROUP \
+          --vnet-name $VNET_NAME \
+          --name $INFRA_SUBNET_NAME \
+          --address-prefixes $INFRA_SUBNET_PREFIX \
+          --delegations Microsoft.App/environments >/dev/null
+      else
+        echo "   Ensuring subnet $INFRA_SUBNET_NAME is delegated to Microsoft.App/environments"
+        az network vnet subnet update \
+          --resource-group $RESOURCE_GROUP \
+          --vnet-name $VNET_NAME \
+          --name $INFRA_SUBNET_NAME \
+          --delegations Microsoft.App/environments >/dev/null
+      fi
+
+      INFRA_SUBNET_ID=$(az network vnet subnet show \
+        --resource-group $RESOURCE_GROUP \
+        --vnet-name $VNET_NAME \
+        --name $INFRA_SUBNET_NAME \
+        --query id -o tsv | tr -d '\r')
+
+      az containerapp env create \
+        --name $ENVIRONMENT \
+        --resource-group $RESOURCE_GROUP \
+        --location "$LOCATION" \
+        --infrastructure-subnet-resource-id "$INFRA_SUBNET_ID"
         ;;
     5)
         echo "5. Creating Azure Container App $API_NAME in $ENVIRONMENT" 
@@ -84,7 +127,8 @@ execute_step() {
         ;;
     8)     
         echo "8. Assigning User Assigned Identity $USER_ASSIGNED_IDENTITY_NAME to Container App $API_NAME" 
-        az containerapp identity assign --name $API_NAME --resource-group $RESOURCE_GROUP --user-assigned $(az identity show -g $RESOURCE_GROUP -n $USER_ASSIGNED_IDENTITY_NAME --query id -o tsv)
+        IDENTITY_ID=$(az identity show -g $RESOURCE_GROUP -n $USER_ASSIGNED_IDENTITY_NAME --query id -o tsv | tr -d '\r')
+        az containerapp identity assign --name $API_NAME --resource-group $RESOURCE_GROUP --user-assigned "$IDENTITY_ID"
         ;;
     9)
         echo "9. Redeploy Azure Container App $API_NAME in $ENVIRONMENT"

@@ -33,3 +33,4 @@ WinAdvRAGSvc.exe
 .env.uat
 .env.prod
 .env.uat.ui
+.env.prod.bak
