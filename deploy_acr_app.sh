@@ -4,18 +4,20 @@ set -e
 
 print_help() {
   echo ""
-  echo "Usage: $0 SUF_FIX [STEP]"
+  echo "Usage: $0 SUF_FIX [STEP] [IMAGE_TAG]"
   echo
   echo "Arguments:"
   echo "  SUF_FIX    A suffix to be used for naming resources. It should be an integer or a short string."
   echo "  STEP       (Optional) Specify which steps to execute:"
   echo "             - A single step number (e.g., 5) to execute only that step."
   echo "             - A range of steps (e.g., 2-5) to execute steps 2, 3, 4, and 5."
+  echo "  IMAGE_TAG  (Optional) Container image tag to deploy. Default: latest"
   echo
   echo "Examples:"
   echo "  $0 01"
   echo "  $0 demo01 3"
   echo "  $0 demo 2-4"
+  echo "  $0 demo 10 20260423-1"
 
   echo "Steps:"
     echo "  1. Create Resource Group"
@@ -26,7 +28,8 @@ print_help() {
     echo "  6. Set Session Affinity for App Frontend"
     echo "  7. Create User Assigned Identity"
     echo "  8. Assign User Assigned Identity to Container App"
-    echo "  9. Redeploy Azure Container App"
+    echo "  9. Redeploy Azure Container App (legacy)"
+    echo "  10. Force new Container App revision for image tag"
 }
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
@@ -55,6 +58,47 @@ VNET_NAME="vnet-${ORAG_NAME}-${SUF_FIX}"
 VNET_ADDRESS_PREFIX="10.0.0.0/16"
 INFRA_SUBNET_NAME="snet-containerapps-infra"
 INFRA_SUBNET_PREFIX="10.0.0.0/27"
+IMAGE_TAG=${3:-latest}
+IMAGE_REF="$ACR_NAME.azurecr.io/$API_NAME:$IMAGE_TAG"
+
+sanitize_revision_part() {
+  local value="$1"
+
+  value=$(echo "$value" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9-]+/-/g; s/^-+//; s/-+$//; s/-{2,}/-/g')
+  echo "$value"
+}
+
+generate_revision_suffix() {
+  local timestamp
+  local sanitized_tag
+  local short_tag
+
+  timestamp=$(date -u +%m%d%H%M%S)
+  sanitized_tag=$(sanitize_revision_part "$IMAGE_TAG")
+  short_tag=$(echo "$sanitized_tag" | cut -c1-18 | sed -E 's/-+$//')
+
+  if [ -z "$short_tag" ]; then
+    echo "img-${timestamp}"
+  else
+    echo "img-${short_tag}-${timestamp}"
+  fi
+}
+
+update_container_app_image() {
+  local revision_suffix
+
+  revision_suffix=$(generate_revision_suffix)
+
+  echo "   Deploying image $IMAGE_REF"
+  echo "   Creating revision suffix $revision_suffix"
+
+  az containerapp update \
+    --name "$API_NAME" \
+    --resource-group "$RESOURCE_GROUP" \
+    --image "$IMAGE_REF" \
+    --revision-suffix "$revision_suffix" \
+    --query properties.latestRevisionName -o tsv
+}
 
 execute_step() {
   case $1 in
@@ -67,8 +111,8 @@ execute_step() {
         az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Basic --admin-enabled true
         ;;
     3)
-        echo "3. Building and pushing Docker image $API_NAME to Azure Container Registry $ACR_NAME" 
-        az acr build --registry $ACR_NAME --image $API_NAME .
+      echo "3. Building and pushing Docker image $API_NAME:$IMAGE_TAG to Azure Container Registry $ACR_NAME" 
+      az acr build --registry $ACR_NAME --image "$API_NAME:$IMAGE_TAG" .
         ;;
     4)
       echo "4. Creating Azure Container App Environment $ENVIRONMENT with VNet $VNET_NAME in $LOCATION"
@@ -114,8 +158,8 @@ execute_step() {
         --infrastructure-subnet-resource-id "$INFRA_SUBNET_ID"
         ;;
     5)
-        echo "5. Creating Azure Container App $API_NAME in $ENVIRONMENT" 
-        az containerapp create --name $API_NAME --resource-group $RESOURCE_GROUP --environment $ENVIRONMENT --image $ACR_NAME.azurecr.io/$API_NAME --target-port $TARGET_PORT --ingress external --registry-server $ACR_NAME.azurecr.io --query properties.configuration.ingress.fqdn
+      echo "5. Creating Azure Container App $API_NAME in $ENVIRONMENT with image $IMAGE_REF" 
+      az containerapp create --name $API_NAME --resource-group $RESOURCE_GROUP --environment $ENVIRONMENT --image "$IMAGE_REF" --target-port $TARGET_PORT --ingress external --registry-server $ACR_NAME.azurecr.io --query properties.configuration.ingress.fqdn
         ;;  
     6)
         echo "6. Set Session Affinity for App Frontend $FRONTEND_NAME in $ENVIRONMENT" 
@@ -131,8 +175,12 @@ execute_step() {
         az containerapp identity assign --name $API_NAME --resource-group $RESOURCE_GROUP --user-assigned "$IDENTITY_ID"
         ;;
     9)
-        echo "9. Redeploy Azure Container App $API_NAME in $ENVIRONMENT"
-        az containerapp up --name $API_NAME --image $ACR_NAME.azurecr.io/$API_NAME  --ingress external --target-port $TARGET_PORT --resource-group $RESOURCE_GROUP
+      echo "9. Redeploy Azure Container App $API_NAME in $ENVIRONMENT using az containerapp up with image $IMAGE_REF"
+      az containerapp up --name $API_NAME --image "$IMAGE_REF" --ingress external --target-port $TARGET_PORT --resource-group $RESOURCE_GROUP
+      ;;
+    10)
+      echo "10. Forcing a new revision for Azure Container App $API_NAME with image $IMAGE_REF"
+      update_container_app_image
         ;;
     *)
         echo "Invalid step: $1"
