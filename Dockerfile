@@ -1,5 +1,5 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM advragmwaidev02.azurecr.io/docaihub:1.2.9
+FROM advragmwaidev02.azurecr.io/docaihub:1.3.1
 
 EXPOSE 8000
 

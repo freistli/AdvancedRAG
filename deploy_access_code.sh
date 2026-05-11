@@ -236,6 +236,11 @@ get_access_code_secret_id() {
     --query id -o tsv | tr -d '\r'
 }
 
+get_access_code_secret_uri() {
+  # Returns secret URI without version (uses latest enabled version)
+  echo "https://${KEYVAULT_NAME}.vault.azure.net/secrets/${KEYVAULT_SECRET_NAME}"
+}
+
 get_access_code_secret_value() {
   az keyvault secret show \
     --vault-name "$KEYVAULT_NAME" \
@@ -296,12 +301,15 @@ assign_kv_secret_read_role() {
 }
 
 update_containerapp_access_code_from_kv() {
-  local secret_id="$1"
+  local secret_uri
+  
+  # Use secret URI without version to always reference latest enabled version
+  secret_uri=$(get_access_code_secret_uri)
 
   az containerapp secret set \
     --name "$API_NAME" \
     --resource-group "$RESOURCE_GROUP" \
-    --secrets "${CONTAINERAPP_SECRET_NAME}=keyvaultref:${secret_id},identityref:system" >/dev/null
+    --secrets "${CONTAINERAPP_SECRET_NAME}=keyvaultref:${secret_uri},identityref:system" >/dev/null
 
   az containerapp update \
     --name "$API_NAME" \
@@ -410,8 +418,7 @@ execute_step() {
       ;;
     6)
       echo "6. Updating Container App environment variable $ENV_VAR_NAME from Key Vault secret"
-      secret_id=$(get_access_code_secret_id)
-      update_containerapp_access_code_from_kv "$secret_id"
+      update_containerapp_access_code_from_kv
       ;;
     7)
       echo "7. Restarting latest revision for Container App $API_NAME"
