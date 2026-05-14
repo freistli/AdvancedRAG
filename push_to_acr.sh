@@ -13,8 +13,9 @@ SUF_FIX=$2
 ORAG_NAME="mwai"
 ACR_NAME="advrag${ORAG_NAME}${SUF_FIX}"
 ACR_SERVER="${ACR_NAME}.azurecr.io"
+API_NAME="advrag-${ORAG_NAME}-${SUF_FIX}"
 LOCAL_IMAGE="freistli/docaihub"
-REMOTE_IMAGE="${ACR_SERVER}/docaihub"
+REMOTE_IMAGE="${ACR_SERVER}/${API_NAME}"
 
 echo "Logging in to ACR: $ACR_NAME"
 ACR_TOKEN=$(az acr login --name $ACR_NAME --expose-token --output tsv --query accessToken)

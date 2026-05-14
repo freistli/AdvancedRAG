@@ -426,7 +426,7 @@ execute_step() {
       ;;
     8)
       echo "8. Sending test HTTP request to validate new Access_Code"
-      access_code=$(get_access_code_secret_value_with_retry)
+      access_code=$(get_access_code_secret_value_with_retry)      
       send_test_http_request "$access_code"
       ;;
     *)

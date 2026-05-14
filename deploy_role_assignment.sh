@@ -23,6 +23,8 @@ print_help() {
   echo "  3. Assign system identity to Azure Storage account"
   echo "  4. Assign system identity to Azure AI Search service"
   echo "  5. Restart latest Container App revision"
+  echo "  6. Assign Azure Function system identity to Azure AI Search service"
+  echo "  7. Assign Azure Function system identity to Azure OpenAI resource"
 }
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
@@ -40,6 +42,7 @@ ORAG_NAME="mwai"
 SUF_FIX=$1
 RESOURCE_GROUP="rg-${ORAG_NAME}-${SUF_FIX}"
 API_NAME="advrag-${ORAG_NAME}-${SUF_FIX}"
+FUNCTION_APP_NAME="advrag-func-${ORAG_NAME}-${SUF_FIX}"
 ENV_FILE=${3:-.env.uat}
 
 if [ ! -f "$ENV_FILE" ]; then
@@ -217,6 +220,66 @@ execute_step() {
 
       az containerapp revision restart --name "$API_NAME" --resource-group "$RESOURCE_GROUP" --revision "$latest_revision"
       ;;
+    6)
+      echo "6. Assign Azure Function $FUNCTION_APP_NAME system identity to Azure AI Search service from $ENV_FILE"
+
+      local func_principal_id func_identity_type
+      func_identity_type=$(az functionapp identity show --name "$FUNCTION_APP_NAME" --resource-group "$RESOURCE_GROUP" --query "type" -o tsv 2>/dev/null | tr -d '\r' || true)
+
+      if [[ "$func_identity_type" != *"SystemAssigned"* ]]; then
+        echo "Enabling system identity for Function App $FUNCTION_APP_NAME"
+        az functionapp identity assign --name "$FUNCTION_APP_NAME" --resource-group "$RESOURCE_GROUP" >/dev/null
+      fi
+
+      func_principal_id=$(az functionapp identity show --name "$FUNCTION_APP_NAME" --resource-group "$RESOURCE_GROUP" --query "principalId" -o tsv | tr -d '\r')
+
+      if [ -z "$func_principal_id" ]; then
+        echo "Could not resolve principalId for Function App $FUNCTION_APP_NAME"
+        exit 1
+      fi
+
+      local search_endpoint search_name search_scope
+      search_endpoint=$(read_env_value "AZURE_SEARCH_ENDPOINT")
+      search_name=$(endpoint_to_name "$search_endpoint")
+      search_scope=$(resource_id_by_type_and_name "Microsoft.Search/searchServices" "$search_name")
+
+      if [ -z "$search_scope" ]; then
+        echo "Azure AI Search resource not found from endpoint: $search_endpoint"
+        exit 1
+      fi
+
+      assign_role "Search Index Data Contributor" "$search_scope" "$func_principal_id"
+      assign_role "Search Service Contributor" "$search_scope" "$func_principal_id"
+      ;;
+    7)
+      echo "7. Assign Azure Function $FUNCTION_APP_NAME system identity to Azure OpenAI from $ENV_FILE"
+
+      local func_principal_id func_identity_type
+      func_identity_type=$(az functionapp identity show --name "$FUNCTION_APP_NAME" --resource-group "$RESOURCE_GROUP" --query "type" -o tsv 2>/dev/null | tr -d '\r' || true)
+
+      if [[ "$func_identity_type" != *"SystemAssigned"* ]]; then
+        echo "Enabling system identity for Function App $FUNCTION_APP_NAME"
+        az functionapp identity assign --name "$FUNCTION_APP_NAME" --resource-group "$RESOURCE_GROUP" >/dev/null
+      fi
+
+      func_principal_id=$(az functionapp identity show --name "$FUNCTION_APP_NAME" --resource-group "$RESOURCE_GROUP" --query "principalId" -o tsv | tr -d '\r')
+
+      if [ -z "$func_principal_id" ]; then
+        echo "Could not resolve principalId for Function App $FUNCTION_APP_NAME"
+        exit 1
+      fi
+
+      local aoai_endpoint aoai_scope
+      aoai_endpoint=$(read_env_value "AZURE_OPENAI_ENDPOINT")
+      aoai_scope=$(resolve_aoai_scope_from_endpoint "$aoai_endpoint")
+
+      if [ -z "$aoai_scope" ]; then
+        echo "Azure OpenAI resource not found from endpoint: $aoai_endpoint"
+        exit 1
+      fi
+
+      assign_role "Cognitive Services OpenAI User" "$aoai_scope" "$func_principal_id"
+      ;;
     *)
       echo "Invalid step: $1"
       ;;
@@ -235,7 +298,7 @@ if [ $# -ge 2 ]; then
     exit 1
   fi
 else
-  for step in {1..5}; do
+  for step in {1..7}; do
     execute_step "$step"
   done
 fi

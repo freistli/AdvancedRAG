@@ -30,6 +30,8 @@ print_help() {
     echo "  8. Assign User Assigned Identity to Container App"
     echo "  9. Redeploy Azure Container App (legacy)"
     echo "  10. Force new Container App revision for image tag"
+    echo "  11. Create Azure Storage Account"
+    echo "  12. Grant current signed-in user Storage Blob Data Contributor on the Storage Account"
 }
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
@@ -54,6 +56,7 @@ FRONTEND_NAME="advrag-ui-${SUF_FIX}"
 TARGET_PORT=8000
 ACR_NAME="advrag${ORAG_NAME}${SUF_FIX}"
 USER_ASSIGNED_IDENTITY_NAME="user-${ORAG_NAME}-${SUF_FIX}"
+STORAGE_ACCOUNT_NAME="st${ORAG_NAME}${SUF_FIX}"
 VNET_NAME="vnet-${ORAG_NAME}-${SUF_FIX}"
 VNET_ADDRESS_PREFIX="10.0.0.0/16"
 INFRA_SUBNET_NAME="snet-containerapps-infra"
@@ -182,6 +185,47 @@ execute_step() {
       echo "10. Forcing a new revision for Azure Container App $API_NAME with image $IMAGE_REF"
       update_container_app_image
         ;;
+    11)
+        echo "11. Creating Azure Storage Account $STORAGE_ACCOUNT_NAME in $LOCATION"
+        az storage account create --resource-group $RESOURCE_GROUP --name $STORAGE_ACCOUNT_NAME --location "$LOCATION" --kind StorageV2 --sku Standard_LRS --enable-large-file-share
+        ;;
+    12)
+        echo "12. Granting current signed-in user Storage Blob Data Contributor on Storage Account $STORAGE_ACCOUNT_NAME"
+
+        # Try Microsoft Graph first
+        CURRENT_USER_OBJECT_ID=$(az ad signed-in-user show --query id -o tsv 2>/dev/null | tr -d '\r' || true)
+
+        # Fallback: extract `oid` claim from an ARM access token JWT (avoids Graph CAE challenges)
+        if [ -z "$CURRENT_USER_OBJECT_ID" ]; then
+          echo "   Graph call failed (CAE/Conditional Access). Extracting object id from ARM access token..."
+          ARM_TOKEN=$(az account get-access-token --resource https://management.azure.com/ --query accessToken -o tsv 2>/dev/null | tr -d '\r' || true)
+          if [ -n "$ARM_TOKEN" ]; then
+            JWT_PAYLOAD=$(echo "$ARM_TOKEN" | awk -F'.' '{print $2}')
+            # base64url -> base64 and pad
+            PAD=$(( (4 - ${#JWT_PAYLOAD} % 4) % 4 ))
+            JWT_PAYLOAD_PADDED="${JWT_PAYLOAD}$(printf '=%.0s' $(seq 1 $PAD))"
+            JWT_JSON=$(echo "$JWT_PAYLOAD_PADDED" | tr '_-' '/+' | base64 -d 2>/dev/null || true)
+            CURRENT_USER_OBJECT_ID=$(echo "$JWT_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('oid',''))" 2>/dev/null | tr -d '\r' || true)
+          fi
+        fi
+
+        if [ -z "$CURRENT_USER_OBJECT_ID" ]; then
+          echo "Could not resolve current signed-in user object id. Please run 'az login' and retry."
+          exit 1
+        fi
+        echo "   Resolved object id: $CURRENT_USER_OBJECT_ID"
+        STORAGE_SCOPE=$(az storage account show -n $STORAGE_ACCOUNT_NAME -g $RESOURCE_GROUP --query id -o tsv | tr -d '\r')
+        if [ -z "$STORAGE_SCOPE" ]; then
+          echo "Storage account $STORAGE_ACCOUNT_NAME not found in $RESOURCE_GROUP"
+          exit 1
+        fi
+        EXISTING_ASSIGNMENT=$(az role assignment list --assignee-object-id "$CURRENT_USER_OBJECT_ID" --scope "$STORAGE_SCOPE" --query "[?roleDefinitionName=='Storage Blob Data Contributor'] | length(@)" -o tsv | tr -d '\r')
+        if [ "$EXISTING_ASSIGNMENT" != "0" ]; then
+          echo "   Role [Storage Blob Data Contributor] already assigned to current user on $STORAGE_ACCOUNT_NAME"
+        else
+          az role assignment create --role "Storage Blob Data Contributor" --assignee-object-id "$CURRENT_USER_OBJECT_ID" --assignee-principal-type User --scope "$STORAGE_SCOPE"
+        fi
+        ;;
     *)
         echo "Invalid step: $1"
         ;;
@@ -201,7 +245,7 @@ if [ $# -ge 2 ]; then
     exit 1
   fi
 else
-  for step in {1..9}; do
+  for step in {1..9} 11 12; do
     execute_step $step
   done
 fi
